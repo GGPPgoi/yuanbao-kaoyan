@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
@@ -6,975 +6,1760 @@
 <title>苑宝的考研基地 🌅</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  
+
   :root {
-    --sunset-orange: #FF8C42;
-    --sunset-pink: #FF6B8A;
-    --sunset-purple: #C084FC;
-    --sunset-light: #FFF5EB;
-    --sunset-warm: #FFE8D6;
-    --card-bg: rgba(255, 255, 255, 0.85);
-    --text-primary: #3D2C2C;
-    --text-secondary: #7A6565;
-    --shadow: 0 4px 20px rgba(255, 140, 66, 0.12);
+    --orange: #FF8C42;
+    --pink: #FF6B8A;
+    --purple: #C084FC;
+    --deep-purple: #9B6FD1;
+    --warm-light: #FFF5EB;
+    --card-bg: rgba(255,255,255,0.72);
+    --card-border: rgba(255,255,255,0.85);
+    --text-primary: #3D2828;
+    --text-secondary: #7A6060;
+    --shadow-warm: 0 4px 24px rgba(255,120,80,0.13);
+    --shadow-hover: 0 8px 32px rgba(255,107,138,0.22);
+    --radius: 18px;
+    --radius-sm: 12px;
   }
 
   body {
     font-family: -apple-system, 'Segoe UI', 'Microsoft YaHei', '微软雅黑', sans-serif;
-    background: linear-gradient(135deg, #FFE8D6 0%, #FFD6C0 15%, #FFBFA0 30%, #FFB3B3 50%, #E8B4D8 70%, #D4A5E5 85%, #C084FC 100%);
-    background-attachment: fixed;
-    min-height: 100vh;
+    background: #1a0a0a;
     color: var(--text-primary);
-    padding-bottom: 40px;
+    min-height: 100vh;
+    padding-bottom: 60px;
+    overflow-x: hidden;
   }
+
+  /* ===== CANVAS BACKGROUND ===== */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ===== NOISE TEXTURE OVERLAY ===== */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+
+  /* ===== EVERYTHING ABOVE CANVAS ===== */
+  .header, .container { position: relative; z-index: 2; }
 
   /* ===== HEADER ===== */
   .header {
-    background: linear-gradient(135deg, #FF8C42 0%, #FF6B8A 50%, #C084FC 100%);
-    padding: 32px 20px 28px;
+    padding: 36px 20px 30px;
     text-align: center;
     color: white;
     position: relative;
     overflow: hidden;
+    z-index: 2;
   }
   .header::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-    animation: shimmer 8s ease-in-out infinite;
+    inset: 0;
+    background: linear-gradient(160deg,
+      rgba(255,140,66,0.55) 0%,
+      rgba(255,107,138,0.45) 45%,
+      rgba(192,132,252,0.50) 100%);
+    backdrop-filter: blur(0px);
   }
-  @keyframes shimmer {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(30px, -20px); }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(20,8,8,0.0));
   }
+  .header-inner { position: relative; z-index: 1; }
+
   .header h1 {
-    font-size: clamp(22px, 5vw, 32px);
+    font-size: clamp(24px, 5vw, 34px);
     font-weight: 800;
-    position: relative;
-    z-index: 1;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+    margin-bottom: 6px;
   }
   .header .subtitle {
     font-size: 13px;
-    opacity: 0.9;
-    margin-top: 6px;
-    position: relative;
-    z-index: 1;
+    opacity: 0.92;
+    letter-spacing: 0.3px;
+    margin-bottom: 20px;
   }
-
-  /* ===== COUNTDOWN ===== */
   .countdown-bar {
     display: flex;
     justify-content: center;
-    gap: 16px;
+    gap: 14px;
     flex-wrap: wrap;
-    margin-top: 18px;
-    position: relative;
-    z-index: 1;
   }
   .countdown-chip {
-    background: rgba(255,255,255,0.25);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.4);
-    border-radius: 16px;
-    padding: 8px 18px;
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 20px;
+    padding: 10px 20px;
     text-align: center;
+    transition: transform 0.2s;
   }
+  .countdown-chip:hover { transform: translateY(-2px); }
   .countdown-chip .num {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     display: block;
     line-height: 1.1;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.15);
   }
-  .countdown-chip .label {
-    font-size: 11px;
-    opacity: 0.9;
-  }
+  .countdown-chip .label { font-size: 11px; opacity: 0.88; }
 
   /* ===== CONTAINER ===== */
   .container {
-    max-width: 720px;
+    max-width: 680px;
     margin: 0 auto;
-    padding: 16px;
+    padding: 18px 16px;
+    z-index: 2;
+  }
+
+  /* ===== GLASS CARD BASE ===== */
+  .glass {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-warm),
+                inset 0 1px 0 rgba(255,255,255,0.6);
   }
 
   /* ===== DATE NAV ===== */
   .date-nav {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 14px 18px;
-    margin-bottom: 16px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.6);
+    gap: 10px;
   }
-  .date-nav button {
-    background: linear-gradient(135deg, #FF8C42, #FF6B8A);
+  .nav-btn {
+    background: linear-gradient(135deg, var(--orange), var(--pink));
     color: white;
     border: none;
-    border-radius: 12px;
-    width: 40px;
-    height: 40px;
-    font-size: 18px;
+    border-radius: 14px;
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    box-shadow: 0 3px 12px rgba(255,107,138,0.3);
     flex-shrink: 0;
   }
-  .date-nav button:hover { transform: scale(1.08); box-shadow: 0 3px 12px rgba(255,107,138,0.3); }
-  .date-nav button:active { transform: scale(0.95); }
-  .date-display {
-    text-align: center;
-    flex: 1;
-  }
-  .date-display .main-date {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--text-primary);
-  }
-  .date-display .weekday {
+  .nav-btn:hover { transform: scale(1.1); box-shadow: 0 5px 18px rgba(255,107,138,0.45); }
+  .nav-btn:active { transform: scale(0.93); opacity: 0.8; }
+  .today-btn {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
     font-size: 12px;
-    color: var(--text-secondary);
-    margin-top: 2px;
-  }
-  .date-nav .today-btn {
-    background: linear-gradient(135deg, #C084FC, #FF6B8A);
-    font-size: 12px;
+    font-weight: 700;
     width: auto;
-    padding: 6px 14px;
-    border-radius: 10px;
-    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 12px;
+    letter-spacing: 0.3px;
   }
+  .date-display { text-align: center; flex: 1; }
+  .date-display .main-date { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+  .date-display .weekday { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
 
-  /* ===== PROGRESS BAR ===== */
-  .progress-section {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 16px 18px;
-    margin-bottom: 16px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.6);
-  }
+  /* ===== PROGRESS ===== */
+  .progress-section { padding: 16px 18px; margin-bottom: 14px; }
   .progress-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
   }
-  .progress-title {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--text-primary);
-  }
-  .progress-count {
-    font-size: 13px;
-    color: var(--sunset-pink);
-    font-weight: 700;
-  }
-  .progress-bar-bg {
-    background: #F0E0D6;
-    border-radius: 10px;
-    height: 10px;
+  .progress-title { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+  .progress-count { font-size: 14px; color: var(--pink); font-weight: 800; }
+  .progress-track {
+    background: rgba(255,180,160,0.25);
+    border-radius: 12px;
+    height: 12px;
     overflow: hidden;
+    position: relative;
   }
-  .progress-bar-fill {
+  .progress-fill {
     height: 100%;
-    border-radius: 10px;
-    background: linear-gradient(90deg, #FF8C42, #FF6B8A, #C084FC);
-    transition: width 0.5s ease;
+    border-radius: 12px;
+    background: linear-gradient(90deg, var(--orange), var(--pink), var(--purple));
+    background-size: 200% 100%;
+    transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    animation: shimmer-bar 3s ease-in-out infinite;
+  }
+  @keyframes shimmer-bar {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  .progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 6px; right: 6px; height: 3px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 2px;
+  }
+
+  /* ===== SECTION TITLE ===== */
+  .section-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
   }
 
   /* ===== TASK CARD ===== */
-  .section-title {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
   .task-card {
     background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border-radius: 16px;
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255,255,255,0.75);
+    border-radius: var(--radius);
     padding: 14px 16px;
     margin-bottom: 10px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: var(--shadow-warm),
+                inset 0 1px 0 rgba(255,255,255,0.55);
     display: flex;
-    gap: 12px;
+    gap: 13px;
     align-items: flex-start;
-    transition: transform 0.15s, box-shadow 0.15s;
     cursor: pointer;
+    transition: transform 0.18s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow 0.18s ease,
+                opacity 0.25s ease;
+    position: relative;
+    overflow: hidden;
   }
-  .task-card:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(255,140,66,0.18); }
-  .task-card.completed {
-    opacity: 0.55;
-    background: rgba(255,255,255,0.5);
+  .task-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
   }
-  .task-card.completed .task-text { text-decoration: line-through; }
+  .task-card:hover {
+    transform: translateY(-2px) scale(1.005);
+    box-shadow: var(--shadow-hover),
+                inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+  .task-card:active { transform: scale(0.98); }
 
+  .task-card.completed {
+    opacity: 0.52;
+    background: rgba(255,255,255,0.4);
+    transform: none !important;
+  }
+  .task-card.completed .task-text { text-decoration: line-through; color: var(--text-secondary); }
+
+  /* ripple effect */
+  .task-card .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,107,138,0.25);
+    transform: scale(0);
+    animation: ripple-anim 0.5s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes ripple-anim {
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  /* check circle */
   .task-check {
     flex-shrink: 0;
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
-    border: 2.5px solid #FFB3A0;
+    border: 2.5px solid rgba(255,140,66,0.5);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
-    margin-top: 2px;
+    transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    margin-top: 1px;
+    background: rgba(255,255,255,0.4);
   }
+  .task-card:hover .task-check { border-color: var(--pink); transform: scale(1.1); }
   .task-card.completed .task-check {
-    background: linear-gradient(135deg, #FF8C42, #FF6B8A);
+    background: linear-gradient(135deg, var(--orange), var(--pink));
     border-color: transparent;
+    box-shadow: 0 2px 10px rgba(255,107,138,0.4);
+    transform: scale(1) !important;
   }
-  .task-check svg { display: none; }
-  .task-card.completed .task-check svg { display: block; }
+  .task-check .check-icon { display: none; }
+  .task-card.completed .task-check .check-icon { display: block; animation: pop-in 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes pop-in {
+    0% { transform: scale(0) rotate(-20deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
 
   .task-content { flex: 1; min-width: 0; }
   .task-tag {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
     font-size: 10px;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 8px;
-    margin-bottom: 4px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    letter-spacing: 0.3px;
   }
-  .tag-morning { background: #FFF0E0; color: #E07B20; }
-  .tag-afternoon { background: #FFE8E0; color: #D05530; }
-  .tag-politics { background: #FFE0E0; color: #CC3333; }
-  .tag-english { background: #E0EFFF; color: #3366CC; }
-  .tag-buffer { background: #F0E8FF; color: #8855CC; }
+  .tag-morning  { background: linear-gradient(135deg,#FFF0E0,#FFE4C8); color: #C06010; border: 1px solid rgba(255,140,66,0.2); }
+  .tag-afternoon{ background: linear-gradient(135deg,#FFE8E0,#FFD8D0); color: #B04020; border: 1px solid rgba(255,100,70,0.2); }
+  .tag-politics { background: linear-gradient(135deg,#FFE0E0,#FFCFCF); color: #B02020; border: 1px solid rgba(220,80,80,0.2); }
+  .tag-english  { background: linear-gradient(135deg,#E0EEFF,#D0E4FF); color: #1A50C0; border: 1px solid rgba(80,130,220,0.2); }
+  .tag-buffer   { background: linear-gradient(135deg,#F0E8FF,#E4D8FF); color: #7040B0; border: 1px solid rgba(160,100,220,0.2); }
 
   .task-text {
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.65;
     color: var(--text-primary);
     word-break: break-word;
   }
 
-  /* ===== OVERDUE SECTION ===== */
-  .overdue-section {
-    margin-bottom: 20px;
-  }
-  .overdue-section .section-title {
-    color: #E05555;
-  }
-  .overdue-card {
-    border-left: 4px solid #FF6B8A;
-  }
-  .overdue-date {
-    font-size: 10px;
-    color: #FF6B8A;
-    font-weight: 600;
-    margin-bottom: 2px;
-  }
+  /* ===== OVERDUE ===== */
+  .overdue-section { margin-bottom: 18px; }
+  .overdue-section .section-title { color: #D04040; }
+  .task-card.overdue-card { border-left: 3px solid rgba(255,107,138,0.6); }
+  .overdue-date { font-size: 10px; color: var(--pink); font-weight: 700; margin-bottom: 3px; }
 
   /* ===== EMPTY STATE ===== */
   .empty-state {
     text-align: center;
-    padding: 60px 20px;
+    padding: 56px 20px;
     color: var(--text-secondary);
-  }
-  .empty-state .emoji {
-    font-size: 48px;
-    margin-bottom: 12px;
-  }
-  .empty-state p {
-    font-size: 14px;
-    line-height: 1.6;
-  }
-
-  /* ===== MOTIVATIONAL ===== */
-  .motivation {
     background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border-radius: 20px;
-    padding: 20px;
-    margin-top: 16px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(255,255,255,0.6);
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.8;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-warm);
   }
-  .motivation .quote { font-style: italic; color: var(--sunset-pink); font-weight: 600; }
+  .empty-state .emoji { font-size: 52px; margin-bottom: 14px; display: block; }
+  .empty-state p { font-size: 14px; line-height: 1.7; }
 
   /* ===== ALL DONE ===== */
   .all-done {
     text-align: center;
-    padding: 40px 20px;
+    padding: 36px 20px;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-warm);
+    margin-bottom: 12px;
   }
-  .all-done .emoji { font-size: 56px; margin-bottom: 10px; }
-  .all-done p { font-size: 15px; color: var(--text-secondary); }
-  .all-done .big { font-size: 18px; font-weight: 700; color: var(--sunset-pink); }
+  .all-done .emoji { font-size: 56px; display: block; margin-bottom: 10px; animation: bounce 1s ease infinite; }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .all-done .big { font-size: 18px; font-weight: 800; color: var(--pink); margin-bottom: 6px; }
+  .all-done p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+  /* ===== MOTIVATION ===== */
+  .motivation {
+    margin-top: 16px;
+    padding: 18px 20px;
+    text-align: center;
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.9;
+  }
+  .motivation .quote {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--orange), var(--pink), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  /* ===== FLOATING PARTICLES ===== */
+  .particles { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
   /* ===== RESPONSIVE ===== */
   @media (max-width: 500px) {
-    .container { padding: 10px; }
-    .date-nav { padding: 10px 12px; }
-    .task-card { padding: 12px 14px; }
+    .container { padding: 12px 12px; }
     .countdown-chip .num { font-size: 22px; }
-    .countdown-chip { padding: 6px 12px; }
+    .countdown-chip { padding: 8px 14px; }
+    .task-card { padding: 12px 14px; }
   }
 
   /* ===== SCROLLBAR ===== */
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #FFB3A0; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,140,66,0.3); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,107,138,0.5); }
+
+  /* ===== PHASE PILL ===== */
+  .phase-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10.5px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    letter-spacing: 0.3px;
+  }
+  .phase-course { background: rgba(255,140,66,0.15); color: #C06010; border: 1px solid rgba(255,140,66,0.3); }
+  .phase-plus   { background: rgba(255,107,138,0.12); color: #B03060; border: 1px solid rgba(255,107,138,0.3); }
+  .phase-final  { background: rgba(192,132,252,0.15); color: #8040C0; border: 1px solid rgba(192,132,252,0.3); }
 </style>
 </head>
 <body>
 
+<!-- ===== ANIMATED BACKGROUND ===== -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- ===== HEADER ===== -->
 <div class="header">
-  <h1>🌅 苑宝的考研基地</h1>
-  <div class="subtitle">吉林大学新闻传播学硕 · 二战必胜 💪</div>
-  <div class="countdown-bar">
-    <div class="countdown-chip">
-      <span class="num" id="countdown-days">—</span>
-      <span class="label">天后考试</span>
-    </div>
-    <div class="countdown-chip">
-      <span class="num" id="study-days">—</span>
-      <span class="label">已学习天</span>
-    </div>
-    <div class="countdown-chip">
-      <span class="num" id="total-checked">—</span>
-      <span class="label">已完成任务</span>
+  <div class="header-inner">
+    <h1>🌅 苑宝的考研基地</h1>
+    <div class="subtitle">吉林大学新闻传播学硕 · 二战必胜 · 距离梦想只差一步 💪</div>
+    <div class="countdown-bar">
+      <div class="countdown-chip">
+        <span class="num" id="countdown-days">—</span>
+        <span class="label">天后考试</span>
+      </div>
+      <div class="countdown-chip">
+        <span class="num" id="study-days">—</span>
+        <span class="label">已学习天</span>
+      </div>
+      <div class="countdown-chip">
+        <span class="num" id="total-checked">—</span>
+        <span class="label">已完成任务</span>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="container">
+
   <!-- Date Navigation -->
-  <div class="date-nav">
-    <button onclick="changeDate(-1)" aria-label="前一天">‹</button>
+  <div class="glass date-nav">
+    <button class="nav-btn" onclick="changeDate(-1)" aria-label="前一天">‹</button>
     <div class="date-display">
       <div class="main-date" id="main-date"></div>
       <div class="weekday" id="weekday"></div>
     </div>
-    <button class="today-btn" onclick="goToday()">今天</button>
-    <button onclick="changeDate(1)" aria-label="后一天">›</button>
+    <button class="nav-btn today-btn" onclick="goToday()">今天</button>
+    <button class="nav-btn" onclick="changeDate(1)" aria-label="后一天">›</button>
   </div>
 
   <!-- Progress -->
-  <div class="progress-section" id="progress-section">
+  <div class="glass progress-section">
     <div class="progress-header">
-      <div class="progress-title">📊 今日进度</div>
+      <div class="progress-title">✨ 今日进度</div>
       <div class="progress-count" id="progress-count">0/0</div>
     </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
     </div>
   </div>
 
-  <!-- Overdue Tasks -->
+  <!-- Overdue -->
   <div class="overdue-section" id="overdue-section" style="display:none;">
     <div class="section-title">⏰ 未完成的任务</div>
     <div id="overdue-list"></div>
   </div>
 
-  <!-- Today Tasks -->
+  <!-- Tasks -->
   <div id="today-section">
     <div class="section-title" id="tasks-title">📝 今日任务</div>
     <div id="task-list"></div>
   </div>
 
   <!-- Motivation -->
-  <div class="motivation" id="motivation"></div>
+  <div class="glass motivation" id="motivation"></div>
+
 </div>
 
 <script>
-// ===== PLAN DATA =====
+// ===================================================================
+// ANIMATED BACKGROUND
+// ===================================================================
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, orbs, sparks;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  // Orbs = large soft glowing blobs
+  function makeOrb() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 180 + Math.random() * 260,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.18,
+      hue: Math.random() < 0.5 ? 15 + Math.random() * 25 : 300 + Math.random() * 40, // orange or pink-purple
+      alpha: 0.18 + Math.random() * 0.14,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.004 + Math.random() * 0.003
+    };
+  }
+
+  // Sparks = tiny floating dots
+  function makeSpark() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: 0.8 + Math.random() * 2.2,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -0.15 - Math.random() * 0.25,
+      alpha: 0.3 + Math.random() * 0.5,
+      fade: 0.003 + Math.random() * 0.004,
+      hue: 20 + Math.random() * 320
+    };
+  }
+
+  function init() {
+    resize();
+    orbs = Array.from({ length: 7 }, makeOrb);
+    sparks = Array.from({ length: 55 }, makeSpark);
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Base gradient
+    const grad = ctx.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0,   '#2a0d0d');
+    grad.addColorStop(0.3, '#1e0a15');
+    grad.addColorStop(0.6, '#130820');
+    grad.addColorStop(1,   '#1a0818');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle grid / geometry lines
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255,160,100,0.025)';
+    ctx.lineWidth = 0.5;
+    const gap = 60;
+    for (let x = 0; x < W; x += gap) {
+      ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    }
+    for (let y = 0; y < H; y += gap) {
+      ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+    }
+    ctx.restore();
+
+    // Orbs
+    const t = Date.now() * 0.001;
+    orbs.forEach(o => {
+      o.phase += o.speed;
+      const pulse = 1 + 0.06 * Math.sin(o.phase);
+      const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r * pulse);
+      g.addColorStop(0,   `hsla(${o.hue},85%,70%,${o.alpha})`);
+      g.addColorStop(0.5, `hsla(${o.hue},70%,55%,${o.alpha * 0.4})`);
+      g.addColorStop(1,   `hsla(${o.hue},60%,40%,0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(o.x, o.y, o.r * pulse, 0, Math.PI * 2);
+      ctx.fill();
+
+      o.x += o.vx;
+      o.y += o.vy;
+      if (o.x < -o.r) o.x = W + o.r;
+      if (o.x > W + o.r) o.x = -o.r;
+      if (o.y < -o.r) o.y = H + o.r;
+      if (o.y > H + o.r) o.y = -o.r;
+    });
+
+    // Sparks / floating particles
+    sparks.forEach((s, i) => {
+      ctx.save();
+      ctx.globalAlpha = s.alpha;
+      ctx.fillStyle = `hsl(${s.hue},80%,80%)`;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      s.x += s.vx;
+      s.y += s.vy;
+      s.alpha -= s.fade;
+      if (s.alpha <= 0 || s.y < -10) {
+        sparks[i] = makeSpark();
+        sparks[i].y = H + 5;
+        sparks[i].alpha = 0.1 + Math.random() * 0.3;
+      }
+    });
+
+    // Bokeh rings
+    if (Math.random() < 0.012) {
+      const bx = Math.random() * W;
+      const by = Math.random() * H;
+      const br = 8 + Math.random() * 30;
+      const bh = [15, 340, 270][Math.floor(Math.random() * 3)];
+      ctx.save();
+      ctx.strokeStyle = `hsla(${bh},80%,80%,0.12)`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(bx, by, br, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { resize(); });
+  init();
+  draw();
+})();
+
+// ===================================================================
+// PLAN DATA
+// ===================================================================
 const PLAN_DATA = {
   "2026-04-21": [
-    { tag: "morning", text: "公共关系学 第1章（公关的性质与功能）精读+公关与广告区别整理+框架笔记" },
+    { tag: "morning",   text: "公共关系学 第1章（公关的性质与功能）精读+公关与广告区别整理+框架笔记" },
     { tag: "afternoon", text: "新闻评论实务——读人民日报评论1篇+仿写100字\n⭐需读教材：新闻评论教程 第1章（评论的性质与功能）" }
   ],
   "2026-04-22": [
-    { tag: "morning", text: "公共关系学 第2章（公关历史与发展）读+发展脉络梳理" },
-    { tag: "afternoon", text: "网络与新媒体——有秃头课跟课，无课自读：第1章（新媒体定义与演变）+要点笔记\n新闻评论实务——读半月谈评论1篇+仿写100字" }
+    { tag: "morning",   text: "公共关系学 第2章（公关历史与发展）读+发展脉络梳理" },
+    { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：第1章（新媒体定义与演变）+要点笔记\n新闻评论实务——读半月谈评论1篇+仿写100字" }
   ],
   "2026-04-23": [
-    { tag: "morning", text: "公共关系学 第3章（公众分析与公关对象）精读+分类表格" },
+    { tag: "morning",   text: "公共关系学 第3章（公众分析与公关对象）精读+分类表格" },
     { tag: "afternoon", text: "新闻采访实务——写消息导语练习2条（自选当日新闻事件）\n⭐需读教材：采访写作 第1章（新闻采访概述、记者职责）" }
   ],
   "2026-04-24": [
-    { tag: "morning", text: "公共关系学 第4章（公关传播媒介与工具）读+媒介选择逻辑整理" },
+    { tag: "morning",   text: "公共关系学 第4章（公关传播媒介与工具）读+媒介选择逻辑整理" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：第2章（新媒体传播特征）+概念整理\n新闻评论实务——读人民日报评论1篇+仿写100字" }
   ],
   "2026-04-25": [
-    { tag: "morning", text: "公共关系学 第5章（公关活动策划与实施）精读+策划流程图" },
+    { tag: "morning",   text: "公共关系学 第5章（公关活动策划与实施）精读+策划流程图" },
     { tag: "afternoon", text: "新闻采访实务——改稿练习（找一篇消息稿，练习精简导语和结构调整）\n新闻评论实务——读半月谈评论1篇+仿写100字" }
   ],
   "2026-04-26": [
     { tag: "buffer", text: "缓冲日：复习本周公关学1–5章，整理笔记；补欠账或休息" }
   ],
   "2026-04-27": [
-    { tag: "morning", text: "公共关系学 第6章（公关危机管理）精读+危机处理步骤整理" },
+    { tag: "morning",   text: "公共关系学 第6章（公关危机管理）精读+危机处理步骤整理" },
     { tag: "afternoon", text: "新闻评论实务——读人民日报评论1篇+仿写150字\n⭐需读教材：新闻评论教程 第2章（评论的历史沿革）" }
   ],
   "2026-04-28": [
-    { tag: "morning", text: "公共关系学 第7章（网络时代的公共关系）读+全书收尾；全书框架复盘" },
+    { tag: "morning",   text: "公共关系学 第7章（网络时代的公共关系）读+全书收尾；全书框架复盘" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：第3章（社交媒体与UGC）+要点整理\n新闻采访实务——写消息导语练习2条" }
   ],
   "2026-04-29": [
-    { tag: "morning", text: "广告学概论 第1章（广告的定义、分类、发展史）精读+概念框架" },
+    { tag: "morning",   text: "广告学概论 第1章（广告的定义、分类、发展史）精读+概念框架" },
     { tag: "afternoon", text: "【广告联读】广告学概论第1章对应练习：整理广告定义与分类卡片\n广告创意传播 第1章（广告创意的本质与思维）读+关键概念整理" }
   ],
   "2026-04-30": [
-    { tag: "morning", text: "广告学概论 第2章（广告的社会功能与经济功能）读+正反面分析" },
+    { tag: "morning",   text: "广告学概论 第2章（广告的社会功能与经济功能）读+正反面分析" },
     { tag: "afternoon", text: "【广告联读】广告学概论第2章对应：功能分析练习，写一段100字功能分析\n广告创意传播 第2章（创意策略与执行）读+创意方法列表" }
   ],
   "2026-05-01": [
-    { tag: "morning", text: "广告学概论 第3章（广告传播理论基础——AIDA、USP等）精读+理论对比表" },
+    { tag: "morning",   text: "广告学概论 第3章（广告传播理论基础——AIDA、USP等）精读+理论对比表" },
     { tag: "afternoon", text: "【广告联读】广告创意传播 第3章（文案创作与广告语）读+仿写2个广告语\n新闻评论实务——读人民日报评论1篇+仿写150字" }
   ],
   "2026-05-02": [
-    { tag: "morning", text: "广告学概论 第4章（广告调研与受众研究）读+方法论整理" },
+    { tag: "morning",   text: "广告学概论 第4章（广告调研与受众研究）读+方法论整理" },
     { tag: "afternoon", text: "【广告联读】广告创意传播 第4章（视觉设计与广告表现）读+要点整理\n网络与新媒体——有课跟课，无课自读：第4章（算法与信息推荐）" }
   ],
   "2026-05-03": [
     { tag: "buffer", text: "缓冲日：公关学全书复盘，整理高频考点；或广告学概论进度确认；补欠账或休息" }
   ],
   "2026-05-04": [
-    { tag: "morning", text: "广告学概论 第5章（广告策划与广告计划）读+策划流程图" },
+    { tag: "morning",   text: "广告学概论 第5章（广告策划与广告计划）读+策划流程图" },
     { tag: "afternoon", text: "【广告联读】广告创意传播 第5章（新媒体广告创意特点）读+全书收尾总结\n新闻编辑实务——标题制作练习：为3篇消息拟3种风格的标题" }
   ],
   "2026-05-05": [
-    { tag: "morning", text: "广告学概论 第6章（广告媒介策略与媒介选择）精读+媒介对比表" },
+    { tag: "morning",   text: "广告学概论 第6章（广告媒介策略与媒介选择）精读+媒介对比表" },
     { tag: "afternoon", text: "【广告联读】广告学概论第6章对应：媒介选择综合练习，写一份媒介组合方案\n广告策划创意学 第1章（广告策划概论与理念）读+概念框架" }
   ],
   "2026-05-06": [
-    { tag: "morning", text: "广告学概论 第7章（广告效果测量）读+测量指标整理" },
+    { tag: "morning",   text: "广告学概论 第7章（广告效果测量）读+测量指标整理" },
     { tag: "afternoon", text: "广告策划创意学 第2章（市场调研与消费者分析）读+方法整理\n新闻评论实务——读半月谈评论1篇+仿写150字\n⭐需读教材：新闻评论教程 第3章（评论的选题与立意）" }
   ],
   "2026-05-07": [
-    { tag: "morning", text: "广告学概论 第8章（广告行业现状与未来）读+全书收尾；全书框架复盘" },
+    { tag: "morning",   text: "广告学概论 第8章（广告行业现状与未来）读+全书收尾；全书框架复盘" },
     { tag: "afternoon", text: "广告策划创意学 第3章（广告创意策略）读+与广告创意传播对比笔记\n网络与新媒体——有课跟课，无课自读：第5章（网络舆论与公共领域）" }
   ],
   "2026-05-08": [
-    { tag: "morning", text: "传播学教程 第1章（传播学的研究对象与基本问题）精读+概念整理" },
+    { tag: "morning",   text: "传播学教程 第1章（传播学的研究对象与基本问题）精读+概念整理" },
     { tag: "afternoon", text: "广告策划创意学 第4章（广告策划书写作）读+策划书模板整理\n新闻编辑实务——稿件修改练习（找一篇有问题的稿件，做修改标注）" }
   ],
   "2026-05-09": [
-    { tag: "morning", text: "传播学教程 第2章（人类传播活动的历史与发展）精读+时间轴笔记" },
+    { tag: "morning",   text: "传播学教程 第2章（人类传播活动的历史与发展）精读+时间轴笔记" },
     { tag: "afternoon", text: "广告策划创意学 第5章（广告评估与效果检测）读+全书收尾\n新闻评论实务——读人民日报评论1篇+仿写200字" }
   ],
   "2026-05-10": [
     { tag: "buffer", text: "缓冲日：广告学概论全书复盘；传播学教程1-2章回顾；补欠账或休息" }
   ],
   "2026-05-11": [
-    { tag: "morning", text: "传播学教程 第3章（符号与意义、人类传播的符号体系）精读+概念辨析" },
+    { tag: "morning",   text: "传播学教程 第3章（符号与意义、人类传播的符号体系）精读+概念辨析" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：第6章（数据新闻与可视化）+要点整理\n新闻采访实务——写消息导语3条（不同体裁导语各一）" }
   ],
   "2026-05-12": [
-    { tag: "morning", text: "传播学教程 第4章（人际传播，自我与人际互动）精读+理论梳理" },
+    { tag: "morning",   text: "传播学教程 第4章（人际传播，自我与人际互动）精读+理论梳理" },
     { tag: "afternoon", text: "新闻评论实务——读半月谈评论1篇+写200字完整短评\n⭐需读教材：新闻评论教程 第4章（评论的结构与论证方法）" }
   ],
   "2026-05-13": [
-    { tag: "morning", text: "传播学教程 第5章（群体传播与组织传播）精读+两种传播类型对比图" },
+    { tag: "morning",   text: "传播学教程 第5章（群体传播与组织传播）精读+两种传播类型对比图" },
     { tag: "afternoon", text: "新闻编辑实务——标题制作练习：为5篇稿件拟标题，自评最优\n网络与新媒体——有课跟课，无课自读：第7章（新媒体与社会变迁）；全书进度确认" }
   ],
   "2026-05-14": [
-    { tag: "morning", text: "传播学教程 第6章（大众传播——核心章节）精读+功能理论概念卡片" },
+    { tag: "morning",   text: "传播学教程 第6章（大众传播——核心章节）精读+功能理论概念卡片" },
     { tag: "afternoon", text: "新闻采访实务——仿写一篇200字短消息（选一个今日新闻事件）\n⭐需读教材：采访写作 第4章（消息的采写与导语写法）" }
   ],
   "2026-05-15": [
-    { tag: "morning", text: "传播学教程 第7章（传播制度与媒介规范理论）精读+四种报刊理论对比表" },
+    { tag: "morning",   text: "传播学教程 第7章（传播制度与媒介规范理论）精读+四种报刊理论对比表" },
     { tag: "afternoon", text: "新闻评论实务——读人民日报评论1篇+写200字完整评论\n⭐需读教材：新闻评论教程 第5章（评论的语言与文风）" }
   ],
   "2026-05-16": [
-    { tag: "morning", text: "传播学教程 第8章（媒介技术与媒介组织）读+媒介发展逻辑梳理" },
+    { tag: "morning",   text: "传播学教程 第8章（媒介技术与媒介组织）读+媒介发展逻辑梳理" },
     { tag: "afternoon", text: "新闻编辑实务——稿件修改综合练习（改稿+拟标题+排版说明，模拟编辑工作流）\n新闻评论实务——写200字短评" }
   ],
   "2026-05-17": [
     { tag: "buffer", text: "缓冲日：传播学教程1–8章复盘，重点理论二次整理；补欠账或休息" }
   ],
   "2026-05-18": [
-    { tag: "morning", text: "传播学教程 第9章（传播效果研究——高频考点）精读+效果理论汇总表" },
+    { tag: "morning",   text: "传播学教程 第9章（传播效果研究——高频考点）精读+效果理论汇总表" },
     { tag: "afternoon", text: "新闻采访实务——写通讯开头200字（练习与消息导语的区别）\n⭐需读教材：采访写作 第5章（通讯的采写）" }
   ],
   "2026-05-19": [
-    { tag: "morning", text: "传播学教程 第10章（受众研究——使用与满足理论等）精读+理论对比" },
+    { tag: "morning",   text: "传播学教程 第10章（受众研究——使用与满足理论等）精读+理论对比" },
     { tag: "afternoon", text: "新闻评论实务——仿写一篇时评200字（选一个近期热点）\n⭐需读教材：新闻评论教程 第6章（各类评论写法——时评、社论、编者按）" }
   ],
   "2026-05-20": [
-    { tag: "morning", text: "传播学教程 第11章（网络传播与新媒体研究）读+互联网传播特征整理；全书收尾" },
+    { tag: "morning",   text: "传播学教程 第11章（网络传播与新媒体研究）读+互联网传播特征整理；全书收尾" },
     { tag: "afternoon", text: "新闻编辑实务——综合练习：找一版真实报纸版面，分析标题风格+稿件选择逻辑\n新闻评论实务——写200字短评" }
   ],
   "2026-05-21": [
-    { tag: "morning", text: "W1–W4内容自由复盘：选1–2个薄弱章节重读，或整理跨章节联系笔记" },
+    { tag: "morning",   text: "W1–W4内容自由复盘：选1–2个薄弱章节重读，或整理跨章节联系笔记" },
     { tag: "afternoon", text: "新闻采访实务——深度报道采访方案练习：写一份300字采访提纲\n⭐需读教材：采访写作 第6章（深度报道采写）" }
   ],
   "2026-05-22": [
-    { tag: "morning", text: "传播学教程全书框架复盘：整理高频考点，建立理论汇总卡片" },
+    { tag: "morning",   text: "传播学教程全书框架复盘：整理高频考点，建立理论汇总卡片" },
     { tag: "afternoon", text: "新闻评论实务——读人民日报评论1篇+写200字完整评论，重点练论证结构\n网络与新媒体——巡检：确认已读章节，有欠账则补" }
   ],
   "2026-05-23": [
-    { tag: "morning", text: "公关学+广告学高频考点对比复盘；自测5道名词解释" },
+    { tag: "morning",   text: "公关学+广告学高频考点对比复盘；自测5道名词解释" },
     { tag: "afternoon", text: "新闻编辑实务——标题制作专项练习（拟标题5条，对比优劣）\n新闻评论实务——写200字短评" }
   ],
   "2026-05-24": [
     { tag: "buffer", text: "额外缓冲日：全面补欠账，或彻底休息充电" }
   ],
   "2026-05-25": [
-    { tag: "morning", text: "国际传播 第1章（国际传播的概念与研究框架）精读+核心概念整理" },
+    { tag: "morning",   text: "国际传播 第1章（国际传播的概念与研究框架）精读+核心概念整理" },
     { tag: "afternoon", text: "新闻评论实务——读半月谈评论1篇+写200字完整评论\n网络与新媒体——有课跟课，无课自读：补读或巡检已学章节" }
   ],
   "2026-05-26": [
-    { tag: "morning", text: "国际传播 第2章（国际传播的历史演变与格局）精读+东西方传播格局对比" },
+    { tag: "morning",   text: "国际传播 第2章（国际传播的历史演变与格局）精读+东西方传播格局对比" },
     { tag: "afternoon", text: "新闻采访实务——写消息稿练习：改写一篇通讯为300字消息\n新闻评论实务——写200字评论" }
   ],
   "2026-05-27": [
-    { tag: "morning", text: "国际传播 第3章（国际传播主体与中国传播力建设）精读+中国叙事框架整理" },
+    { tag: "morning",   text: "国际传播 第3章（国际传播主体与中国传播力建设）精读+中国叙事框架整理" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：复习或补读剩余章节\n新闻评论实务——读人民日报评论1篇+写200字完整评论" }
   ],
   "2026-05-28": [
-    { tag: "morning", text: "国际传播 第4章（国际新闻报道规范与框架理论）精读+框架理论与议程设置联系" },
+    { tag: "morning",   text: "国际传播 第4章（国际新闻报道规范与框架理论）精读+框架理论与议程设置联系" },
     { tag: "afternoon", text: "新闻编辑实务——综合练习：模拟一个稿件修改场景（改稿+拟标题+附注修改理由）\n新闻评论实务——写200字短评" }
   ],
   "2026-05-29": [
-    { tag: "morning", text: "国际传播 第5章（软实力与对外传播策略）精读+软实力案例梳理" },
+    { tag: "morning",   text: "国际传播 第5章（软实力与对外传播策略）精读+软实力案例梳理" },
     { tag: "afternoon", text: "新闻评论实务——读半月谈评论1篇+写300字完整时评，练习论证层次\n网络与新媒体——有课跟课，无课自读：查漏补缺，确认W14前全书完成" }
   ],
   "2026-05-30": [
-    { tag: "morning", text: "国际传播 第6章（全球化与跨文化传播）读+全书收尾；全书框架复盘" },
+    { tag: "morning",   text: "国际传播 第6章（全球化与跨文化传播）读+全书收尾；全书框架复盘" },
     { tag: "afternoon", text: "新闻采访实务——特写开头仿写200字（练习特写与通讯的区别）\n⭐需读教材：采访写作 第7章（新闻特写）\n新闻评论实务——写200字短评" }
   ],
+  "2026-05-31": [
+    { tag: "buffer", text: "缓冲日：国际传播全书复盘，整理笔记；明天起政治英语正式上线，今天可以提前准备（买书/下载APP）" }
+  ],
+  // ——— 6月 · 政治英语正式加入 ———
   "2026-06-01": [
-    { tag: "politics", text: "政治学习（待定）—— 1h，具体内容后续规划" },
-    { tag: "english", text: "英语学习（待定）—— 1h，具体内容后续规划" },
-    { tag: "buffer", text: "理论/实务：缓冲，补欠账或休息" }
+    { tag: "politics", text: "🔴 精讲精练 导论+第1章·马原·唯物论（1h）：通读，圈核心概念，整理「物质/意识/规律」三对关系笔记" },
+    { tag: "english",  text: "🔵 2015年真题阅读 Text 1：做题+精读拆解（45min）；下载扇贝考研APP，设置好词库（15min）" },
+    { tag: "buffer",   text: "专业课：缓冲，补欠账或休息" }
   ],
   "2026-06-02": [
-    { tag: "morning", text: "新闻学概论 第1章（新闻的定义、要素、分类、真实性）精读+做框架笔记" },
+    { tag: "morning",   text: "新闻学概论 第1章（新闻的定义、要素、分类、真实性）精读+做框架笔记" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：继续推进或复习\n新闻评论实务——读人民日报评论1篇+写300字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第1章·马原·辩证法（1h）：矛盾论+量变质变+否定之否定，做1000题对应章节20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第1篇（30min，不查词典强行理解）；2015年真题 Text 2 做题（15min），明天拆解" }
   ],
   "2026-06-03": [
-    { tag: "morning", text: "新闻学概论 第2章（新闻事业的产生与发展，历史脉络）精读+时间轴笔记" },
+    { tag: "morning",   text: "新闻学概论 第2章（新闻事业的产生与发展，历史脉络）精读+时间轴笔记" },
     { tag: "afternoon", text: "新闻采访实务——网络新闻采写要点整理（与传统采访对比）\n⭐需读教材：采访写作 第8章（网络新闻采写）\n新闻评论实务——写300字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第2章·马原·认识论（1h）：实践与认识的关系，做1000题认识论10题+核对" },
+    { tag: "english",   text: "🔵 2015年真题 Text 2 精读拆解（45min）：分析长难句结构，标出出题逻辑；整理考研阅读套路笔记" }
   ],
   "2026-06-04": [
-    { tag: "morning", text: "新闻学概论 第3章（新闻自由与新闻法制）读+整理核心概念卡片" },
+    { tag: "morning",   text: "新闻学概论 第3章（新闻自由与新闻法制）读+整理核心概念卡片" },
     { tag: "afternoon", text: "新闻编辑实务——版面分析练习：分析一个真实版面的逻辑（稿件主次+标题层级）\n新闻评论实务——写300字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第3章·马原·唯物史观（1h）：生产力/生产关系，做1000题唯物史观15题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第2篇（30min）；2015年真题 Text 3 做题（15min）" }
   ],
   "2026-06-05": [
-    { tag: "morning", text: "新闻学概论 第4章（新闻价值与新闻选择）精读+例题练习" },
+    { tag: "morning",   text: "新闻学概论 第4章（新闻价值与新闻选择）精读+例题练习" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：继续推进\n新闻采访实务——消息导语专项练习3条（不同新闻类型）" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第4章·毛中特·毛泽东思想（1h）：历史地位+活的灵魂三方面，做1000题对应15题" },
+    { tag: "english",   text: "🔵 2015年真题 Text 3 精读拆解（45min）；整理本周阅读错题本：记录做错的题+原因分析" }
   ],
   "2026-06-06": [
-    { tag: "morning", text: "新闻学概论 第5章（新闻采集与写作原则）读+重点标注" },
+    { tag: "morning",   text: "新闻学概论 第5章（新闻采集与写作原则）读+重点标注" },
     { tag: "afternoon", text: "新闻评论实务——读半月谈评论1篇+写300字完整时评\n新闻编辑实务——稿件修改练习（改稿+附修改说明）" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第5章·毛中特·新民主主义革命（1h）：基本纲领+革命道路，做1000题对应15题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第3篇（30min）；2015年真题 Text 4 做题（15min）" }
   ],
   "2026-06-07": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "理论/实务：缓冲，整理国际传播+新闻学概论笔记；补欠账或休息" }
+    { tag: "politics",  text: "🔴 周末复盘：马原1-3章错题回顾（30min），重做错题，整理易错概念卡片" },
+    { tag: "english",   text: "🔵 2015年真题 Text 4 精读拆解（30min）；本周5篇阅读错题汇总（20min）" },
+    { tag: "buffer",    text: "专业课：缓冲，整理国际传播+新闻学概论笔记；补欠账或休息" }
   ],
   "2026-06-08": [
-    { tag: "morning", text: "新闻学概论 第6章（新闻媒介与受众）精读+概念卡片" },
+    { tag: "morning",   text: "新闻学概论 第6章（新闻媒介与受众）精读+概念卡片" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：继续推进，W14前全部完成\n新闻评论实务——写300字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第6章·毛中特·社会主义改造（1h）：三大改造+历史意义，做1000题20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第4篇（30min）；2016年真题 Text 1 做题（15min）" }
   ],
   "2026-06-09": [
-    { tag: "morning", text: "新闻学概论 第7章（新闻职业道德与规范）读+整理要点" },
+    { tag: "morning",   text: "新闻学概论 第7章（新闻职业道德与规范）读+整理要点" },
     { tag: "afternoon", text: "新闻采访实务——写消息稿练习：完整消息一篇（300字含导语+正文+背景）\n新闻评论实务——写300字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第7章·毛中特·建设中国特色社会主义（1h）：理论基础+改革开放历程，做1000题20题" },
+    { tag: "english",   text: "🔵 2016年真题 Text 1 精读拆解（45min）；研究小作文题型：汇总历年真题小作文，分类（书信/通知/告示）" }
   ],
   "2026-06-10": [
-    { tag: "morning", text: "新闻学概论 第8章（媒介融合与新闻变革）精读+与传统新闻对比笔记" },
+    { tag: "morning",   text: "新闻学概论 第8章（媒介融合与新闻变革）精读+与传统新闻对比笔记" },
     { tag: "afternoon", text: "网络与新媒体——有课跟课，无课自读：继续推进\n新闻编辑实务——融媒体编辑场景模拟：分析一个融媒体产品的内容策略" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第8章·习近平新时代中国特色社会主义思想（1h）：总体布局五位一体，做1000题20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第5篇（30min）；2016年真题 Text 2 做题（15min）" }
   ],
   "2026-06-11": [
-    { tag: "morning", text: "新闻学概论 第9章（新闻学的未来与挑战）读+整理；全书框架复盘" },
+    { tag: "morning",   text: "新闻学概论 第9章（新闻学的未来与挑战）读+整理；全书框架复盘" },
     { tag: "afternoon", text: "334实务综合：采写+评论阶段小测，自出题目练习\n新闻评论实务——写一篇400字完整评论（重点练论证层次）" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第9章·思修·社会主义核心价值观（1h）：理论来源+内容，做1000题对应15题" },
+    { tag: "english",   text: "🔵 2016年真题 Text 2 精读拆解（45min）；小作文研究：通读3年书信类真题，总结格式要素（称呼/正文/落款）" }
   ],
   "2026-06-12": [
-    { tag: "morning", text: "440理论阶段性复盘：公关学+广告学+传播学核心考点二刷，整理高频简答题模板" },
+    { tag: "morning",   text: "440理论阶段性复盘：公关学+广告学+传播学核心考点二刷，整理高频简答题模板" },
     { tag: "afternoon", text: "334综合：整理各书目核心题型；写一个简短广告策划框架练习（200字）\n新闻评论实务——写300字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第10章·思修·中华民族共同体（1h）：内涵+五个认同，做1000题15题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第6篇（30min）；2016年真题 Text 3 做题（15min）" }
   ],
   "2026-06-13": [
-    { tag: "morning", text: "440复盘：国际传播+新闻学核心考点整理，高频论述题框架搭建" },
+    { tag: "morning",   text: "440复盘：国际传播+新闻学核心考点整理，高频论述题框架搭建" },
     { tag: "afternoon", text: "334综合模拟：选一道吉大真题，完整作答（消息写作或策划方案）\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 第11章·当代世界政治与经济（1h）：全球化+多极化趋势，做1000题10题；整理本周错题" },
+    { tag: "english",   text: "🔵 2016年真题 Text 3 精读拆解（45min）；整理小作文功能句：申请信/感谢信/建议信各5句开头模板" }
   ],
   "2026-06-14": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "理论/实务：缓冲，整理薄弱环节；补欠账或休息" }
+    { tag: "politics",  text: "🔴 毛中特全章错题回顾（30min）；整理「精讲精练进度表」，确认已完成章节" },
+    { tag: "english",   text: "🔵 本周4篇阅读错题汇总（30min）；2016年真题 Text 4 做题+简单拆解（20min）" },
+    { tag: "buffer",    text: "专业课：缓冲，整理薄弱环节；补欠账或休息" }
   ],
   "2026-06-15": [
-    { tag: "morning", text: "440深化：结合吉大出题风格，重点整理「媒介融合」「议程设置」「框架理论」论述答案" },
+    { tag: "morning",   text: "440深化：结合吉大出题风格，重点整理「媒介融合」「议程设置」「框架理论」论述答案" },
     { tag: "afternoon", text: "334深化：整理新闻写作答题模板（消息/通讯/评论三种体裁）\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题 马原综合巩固（1h）：把1-3章错题重做一遍，标注「已理解/还模糊」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第7篇（30min）；2017年真题 Text 1 做题（15min）" }
   ],
   "2026-06-16": [
-    { tag: "morning", text: "440深化：整理「传播效果」相关论述（议程设置、使用与满足、沉默螺旋）对比表" },
+    { tag: "morning",   text: "440深化：整理「传播效果」相关论述（议程设置、使用与满足、沉默螺旋）对比表" },
     { tag: "afternoon", text: "334深化：广告策划完整方案练习（400-600字）\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 习近平新时代思想深化（1h）：四个全面+五大发展理念，做1000题20题" },
+    { tag: "english",   text: "🔵 2017年真题 Text 1 精读拆解（45min）；大作文研究：通读3年大作文真题，找规律（图表/现象/观点型）" }
   ],
   "2026-06-17": [
-    { tag: "morning", text: "440深化：整理「受众研究」论述模板；自测5道名词解释（传播学+新闻学）" },
+    { tag: "morning",   text: "440深化：整理「受众研究」论述模板；自测5道名词解释（传播学+新闻学）" },
     { tag: "afternoon", text: "334深化：新闻编辑模拟练习（改稿+拟标题+排版说明）\n新闻评论实务——写400字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 近代史纲要·近代化探索（1h）：洋务/戊戌/辛亥，做1000题对应15题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第8篇（30min）；2017年真题 Text 2 做题（15min）" }
   ],
   "2026-06-18": [
-    { tag: "morning", text: "440深化：公关学+广告学综合论述模板整理；自测3道论述题" },
+    { tag: "morning",   text: "440深化：公关学+广告学综合论述模板整理；自测3道论述题" },
     { tag: "afternoon", text: "334综合模拟：一道完整真题（含消息写作+评论），定时作答\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 近代史纲要·中国共产党的成立与发展（1h）：建党+早期运动，做1000题15题" },
+    { tag: "english",   text: "🔵 2017年真题 Text 2 精读拆解（45min）；大作文结构研究：分析「三段式」框架，整理一张结构图" }
   ],
   "2026-06-19": [
-    { tag: "morning", text: "440深化：国际传播+新闻学高频考点二刷；中国对外传播案例积累" },
+    { tag: "morning",   text: "440深化：国际传播+新闻学高频考点二刷；中国对外传播案例积累" },
     { tag: "afternoon", text: "334实务：广告文案专项练习，写3种不同风格广告语\n新闻评论实务——写400字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 近代史纲要·抗日战争与解放战争（1h）：重要会议+转折节点，做1000题20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第9篇（30min）；2017年真题 Text 3 做题（15min）" }
   ],
   "2026-06-20": [
-    { tag: "morning", text: "440综合：整理跨章节联系（新媒体贯穿传播学/新闻学/公关学），写一篇综合分析" },
+    { tag: "morning",   text: "440综合：整理跨章节联系（新媒体贯穿传播学/新闻学/公关学），写一篇综合分析" },
     { tag: "afternoon", text: "334实务：公关危机处理方案练习（选一个真实案例，写处置方案）\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 近代史纲要错题整理（1h）：回顾本周所有1000题错题，写易混知识点清单" },
+    { tag: "english",   text: "🔵 2017年真题 Text 3 精读拆解（45min）；✏️写第1篇大作文草稿：选2015年大作文题，限时30min，先把结构写出来" }
   ],
   "2026-06-21": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "理论/实务：缓冲，整理W6–W9薄弱点；补欠账或休息" }
+    { tag: "politics",  text: "🔴 近代史错题回顾（30min）；制作「高频时间节点卡片」（重要年份+事件）" },
+    { tag: "english",   text: "🔵 自评第1篇大作文：结构完整吗？有没有跑题？找出最大问题（30min）" },
+    { tag: "buffer",    text: "专业课：缓冲，整理W6–W9薄弱点；补欠账或休息" }
   ],
   "2026-06-22": [
-    { tag: "morning", text: "440综合：自模拟名词解释10题（跨所有书目），限时作答并评分" },
+    { tag: "morning",   text: "440综合：自模拟名词解释10题（跨所有书目），限时作答并评分" },
     { tag: "afternoon", text: "334综合：整理吉大334历年出题规律，归纳题型比例和高频方向\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 思修·人生观与价值观（1h）：人生意义+价值观判断，做1000题20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第10篇（30min）；2017年真题 Text 4 做题（15min）" }
   ],
   "2026-06-23": [
-    { tag: "morning", text: "440深化：整理「数字媒体/算法/平台传播」相关论述模板（跨传播学+新闻学+网媒）" },
+    { tag: "morning",   text: "440深化：整理「数字媒体/算法/平台传播」相关论述模板（跨传播学+新闻学+网媒）" },
     { tag: "afternoon", text: "334深化：深度报道策划练习，写一份完整深度报道采访方案（500字）\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 思修·中国精神+爱国主义（1h）：实质+时代价值，做1000题20题" },
+    { tag: "english",   text: "🔵 2017年真题 Text 4 精读拆解（45min）；整理「作文功能句库①」：开头句10句（现象描述/图表描述类）" }
   ],
   "2026-06-24": [
-    { tag: "morning", text: "440深化：整理「新闻伦理/职业道德」相关论述，结合近年热点案例" },
+    { tag: "morning",   text: "440深化：整理「新闻伦理/职业道德」相关论述，结合近年热点案例" },
     { tag: "afternoon", text: "334深化：广告整合传播方案练习（综合用到广告学+公关学+新媒体）\n新闻评论实务——写400字短评" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 思修·法治观念+道德修养（1h）：法律逻辑+道德内化，做1000题20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第11篇（30min）；2018年真题 Text 1 做题（15min）" }
   ],
   "2026-06-25": [
-    { tag: "morning", text: "440阶段小测：自拟一套完整440模拟题（名词解释+简答+论述），定时3h" },
+    { tag: "morning",   text: "440阶段小测：自拟一套完整440模拟题（名词解释+简答+论述），定时3h" },
     { tag: "afternoon", text: "334阶段小测：自拟一套完整334模拟题，定时3h\n新闻评论实务——随模拟卷完成" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题 思修+法治错题整理（1h）：回顾本周错题，重点记忆主观题相关考点" },
+    { tag: "english",   text: "🔵 2018年真题 Text 1 精读拆解（45min）；整理「作文功能句库②」：分析原因句10句+结尾总结句8句" }
   ],
   "2026-06-26": [
-    { tag: "morning", text: "440模拟评分：对照笔记批改昨天模拟题，标注失分点，列改进清单" },
+    { tag: "morning",   text: "440模拟评分：对照笔记批改昨天模拟题，标注失分点，列改进清单" },
     { tag: "afternoon", text: "334模拟评分：批改昨天334模拟，整理答题规范和失分点\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 6月政治进度整理（1h）：盘点已完成章节，找出未做完的1000题，制定7月补完计划" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第12篇（30min）；2018年真题 Text 2 做题（15min）" }
   ],
   "2026-06-27": [
-    { tag: "morning", text: "440薄弱点集中攻克：根据模拟失分点重读对应章节，重新整理答案模板" },
+    { tag: "morning",   text: "440薄弱点集中攻克：根据模拟失分点重读对应章节，重新整理答案模板" },
     { tag: "afternoon", text: "334薄弱点集中攻克：重练失分题型，精修评论一篇至满意为止\n新闻评论实务——精修评论500字" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题 马原+毛中特快速回顾（1h）：全科做一遍快速回顾，标记不确定题目" },
+    { tag: "english",   text: "🔵 2018年真题 Text 2 精读拆解（45min）；✏️写第2篇大作文：选2016年大作文题，限时30min，对照功能句库修改" }
   ],
   "2026-06-28": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "理论/实务：缓冲日，自由复习或休息" }
+    { tag: "politics",  text: "🔴 6月政治月度复盘（30min）：记录完成章节、1000题正确率、薄弱点在哪" },
+    { tag: "english",   text: "🔵 6月英语月度复盘（30min）：统计真题阅读量、作文篇数、原刊篇数，评估阅读准确率" },
+    { tag: "buffer",    text: "专业课：缓冲日，自由复习或休息" }
   ],
   "2026-06-29": [
-    { tag: "morning", text: "440综合：整理考前「口袋书」框架——每本书5个最高频考点，浓缩成速记版" },
+    { tag: "morning",   text: "440综合：整理考前「口袋书」框架——每本书5个最高频考点，浓缩成速记版" },
     { tag: "afternoon", text: "334综合：整理334「口袋书」框架——各体裁写作步骤口诀化\n新闻评论实务——写400字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 补读未完成章节（1h）：根据月度复盘补完尚未读完的章节，做对应1000题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第13篇（30min）；2018年真题 Text 3 做题（15min）" }
   ],
   "2026-06-30": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲周：自由安排。可补欠账、深度复习某本薄弱书目，或彻底休息" }
+    { tag: "politics",  text: "🔴 精讲精练 马原·哲学原理深化（1h）：重点复习联系/发展/矛盾，做1000题马原综合20题" },
+    { tag: "english",   text: "🔵 2018年真题 Text 3 精读拆解（45min）；整理「作文功能句库③」：小作文书信类句型15句（投诉/道歉/邀请）" },
+    { tag: "buffer",    text: "专业课：缓冲周，自由安排，可补欠账或休息" }
   ],
+  // ——— 7月 ———
   "2026-07-01": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲周：自由安排。重读任意一本理论书的薄弱章节，或整理笔记" }
+    { tag: "politics",  text: "🔴 建党节特别任务：整理中共党史重大节点（1h）：建党/建国/改革开放/十八大/十九大/二十大，每节点3条要点；做1000题近代史综合15题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第14篇（30min）；2018年真题 Text 4 做题+拆解（30min）" },
+    { tag: "buffer",    text: "专业课：缓冲，重读薄弱章节" }
   ],
   "2026-07-02": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲周：自由安排。可做一套完整模拟卷（440或334），或整理知识图谱" }
+    { tag: "politics",  text: "🔴 1000题 习近平新时代思想专题25题（1h）；整理错题，写10条核心理念记忆口诀" },
+    { tag: "english",   text: "🔵 2019年真题 Text 1 做题+精读拆解（1h）；写一封求职信（小作文）限时15min，对照格式要点修改" },
+    { tag: "buffer",    text: "专业课：缓冲，可做一套完整模拟卷或整理知识图谱" }
   ],
   "2026-07-03": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲周：自由安排。网媒概论有欠账则补；或复习评论写作，精修一篇" }
+    { tag: "politics",  text: "🔴 精讲精练 整理「大题高频考点」清单（1h）：梳理历年考研政治大题考查章节，标记主观题方向" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第15篇（30min）；2019年真题 Text 2 做题（15min）" },
+    { tag: "buffer",    text: "专业课：缓冲，补读欠账" }
   ],
   "2026-07-04": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲周：自由安排。休息或整理考研笔记" }
+    { tag: "politics",  text: "🔴 1000题 思修+法治综合25题（1h）；整理本周所有1000题错题，整合错题本" },
+    { tag: "english",   text: "🔵 2019年真题 Text 2 精读拆解（45min）；✏️写第3篇大作文：选2017年大作文题，限时30min" },
+    { tag: "buffer",    text: "专业课：缓冲，休息或整理考研笔记" }
   ],
   "2026-07-05": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲周周日：彻底休息，或做一件让自己开心的事" }
+    { tag: "politics",  text: "🔴 自测：不看书默写各科目核心概念（马原5+毛中特5+近代史3+思修3），评分" },
+    { tag: "english",   text: "🔵 评改第3篇大作文：对照功能句库，找结构漏洞，逐句修改一遍" },
+    { tag: "buffer",    text: "缓冲周周日：彻底休息，或做一件让自己开心的事" }
   ],
   "2026-07-06": [
-    { tag: "morning", text: "440全面复盘：按书目整理高频考点清单，标出「一定会背」和「可能出」两档" },
+    { tag: "morning",   text: "440全面复盘：按书目整理高频考点清单，标出「一定会背」和「可能出」两档" },
     { tag: "afternoon", text: "334全面复盘：整理实务题型清单，确认每种体裁的答题步骤已熟练\n新闻评论实务——精写一篇500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练第一轮查漏（1h）：确认所有章节已读完，有空白今天补读+做对应1000题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第16篇（30min）；2019年真题 Text 3 做题（15min）" }
   ],
   "2026-07-07": [
-    { tag: "morning", text: "440强化：新闻学概论全书速读二刷，重点标注章节精读，背5个核心概念" },
+    { tag: "morning",   text: "440强化：新闻学概论全书速读二刷，重点标注章节精读，背5个核心概念" },
     { tag: "afternoon", text: "334强化：采访写作重点二刷（消息写作+深度报道），仿写一篇消息稿\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 马原第1-2章（1h）：只刷错题+全部多选，整理多选错误规律" },
+    { tag: "english",   text: "🔵 2019年真题 Text 3 精读拆解（45min）；整理「长难句分析法」笔记：主干抽离+从句定位" }
   ],
   "2026-07-08": [
-    { tag: "morning", text: "440强化：传播学教程效果理论专题二刷（议程设置/沉默螺旋/涵化），背论述框架" },
+    { tag: "morning",   text: "440强化：传播学教程效果理论专题二刷（议程设置/沉默螺旋/涵化），背论述框架" },
     { tag: "afternoon", text: "334强化：新闻评论专题二刷，重练时评写法，精写500字评论\n网络与新媒体——有课跟课，无课巡检：确认全书进度" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 马原第3章+毛中特第1-2章（1h）：重点攻多选，整理错题+写分析" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第17篇（30min）；2019年真题 Text 4 做题（15min）" }
   ],
   "2026-07-09": [
-    { tag: "morning", text: "440强化：广告学+公关学核心考点二刷，背3个论述题模板答案" },
+    { tag: "morning",   text: "440强化：广告学+公关学核心考点二刷，背3个论述题模板答案" },
     { tag: "afternoon", text: "334强化：广告创意+策划体裁二刷，练一道完整广告策划题（600字）\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 毛中特第3-5章（1h）：重点整理多选易混点——中国各阶段历史任务" },
+    { tag: "english",   text: "🔵 2019年真题 Text 4 精读拆解（45min）；✏️写第4篇大作文：选2018年大作文题，限时30min，重点练开头和结尾" }
   ],
   "2026-07-10": [
-    { tag: "morning", text: "440强化：国际传播+网媒概论核心考点二刷；确认网媒概论W14前完成进度" },
+    { tag: "morning",   text: "440强化：国际传播+网媒概论核心考点二刷；确认网媒概论W14前完成进度" },
     { tag: "afternoon", text: "334强化：综合模拟一套（定时3h完整作答）\n新闻评论实务——随模拟卷完成" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 近代史纲要（1h）：全章错题+多选，整理近代史易混时间节点" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第18篇（30min）；2020年真题 Text 1 做题（15min）" }
   ],
   "2026-07-11": [
-    { tag: "morning", text: "440综合：整理吉大440历年真题高频词，建立个人「必背词条库」（30-50个）" },
+    { tag: "morning",   text: "440综合：整理吉大440历年真题高频词，建立个人「必背词条库」（30-50个）" },
     { tag: "afternoon", text: "334综合：整理吉大334历年真题答案模板，对照自己答案找差距\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 思修+法治（1h）：全章多选二刷，整理「法律与道德」类混淆题" },
+    { tag: "english",   text: "🔵 2020年真题 Text 1 精读拆解（45min）；整理「作文功能句库④」：小作文通知/告示类格式句型10句" }
   ],
   "2026-07-12": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲日：休息或自由复习" }
+    { tag: "politics",  text: "🔴 二刷多选错题专项整理（30min）：把本周做错的多选按「错因」分类（概念混淆/审题不清/知识漏洞）" },
+    { tag: "english",   text: "🔵 本周阅读错题回顾（30min）；评改第4篇大作文，找跑题隐患" },
+    { tag: "buffer",    text: "缓冲日：休息或自由复习" }
   ],
   "2026-07-13": [
-    { tag: "morning", text: "440模拟：完整模拟一套440试卷（定时3h），按照真实考试规格作答" },
+    { tag: "morning",   text: "440模拟：完整模拟一套440试卷（定时3h），按照真实考试规格作答" },
     { tag: "afternoon", text: "334模拟：完整模拟一套334试卷（定时3h），按照真实考试规格作答\n新闻评论实务——随模拟卷完成" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 习近平新时代思想（1h）：全章多选二刷，专项整理「五位一体/四个全面」相关多选" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第19篇（30min）；2020年真题 Text 2 做题（15min）" }
   ],
   "2026-07-14": [
-    { tag: "morning", text: "440模拟评分+分析：批改昨日440卷，标出失分点，建立「错题本」" },
+    { tag: "morning",   text: "440模拟评分+分析：批改昨日440卷，标出失分点，建立「错题本」" },
     { tag: "afternoon", text: "334模拟评分+分析：批改昨日334卷，精修最差一道题到满意\n新闻评论实务——精修500字评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 马原重点章节精读二刷（1h）：重读唯物辩证法+认识论，默写5个高频名词解释定义" },
+    { tag: "english",   text: "🔵 2020年真题 Text 2 精读拆解（45min）；✏️写第5篇大作文：选2019年大作文题，限时30min，不看功能句库强行写" }
   ],
   "2026-07-15": [
-    { tag: "morning", text: "440针对性补漏：集中攻克错题本里失分最多的3个知识点，重写完整答案" },
+    { tag: "morning",   text: "440针对性补漏：集中攻克错题本里失分最多的3个知识点，重写完整答案" },
     { tag: "afternoon", text: "334针对性补漏：集中练失分题型，重练广告策划或深度报道（视错题定）\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题二刷 马原综合多选专项（1h）：把马原所有多选做一遍，错误率>40%的考点单独标出" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第20篇（30min）；2020年真题 Text 3 做题（15min）" }
   ],
   "2026-07-16": [
-    { tag: "morning", text: "440强化：背「必背词条库」前20个，默写后对照检查" },
+    { tag: "morning",   text: "440强化：背「必背词条库」前20个，默写后对照检查" },
     { tag: "afternoon", text: "334强化：整理各体裁「答题口诀」卡片，贴在书桌上\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 毛中特重点章节精读二刷（1h）：重读「建设中国特色社会主义」，默写3个论述题要点框架" },
+    { tag: "english",   text: "🔵 2020年真题 Text 3 精读拆解（45min）；评改第5篇大作文，对比加功能句库前后的差距" }
   ],
   "2026-07-17": [
-    { tag: "morning", text: "440强化：背「必背词条库」后30个，自测并补漏" },
+    { tag: "morning",   text: "440强化：背「必背词条库」后30个，自测并补漏" },
     { tag: "afternoon", text: "334强化：模拟一道综合大题（从题目到完整答案），限时2h\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 近代史+思修大题高频考点梳理（1h）：整理最可能出大题的5个主观题方向，写答题框架" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第21篇（30min）；2020年真题 Text 4 做题（15min）" }
   ],
   "2026-07-18": [
-    { tag: "morning", text: "440+334全科联合模拟：用近年吉大真题做完整套题（定时），模拟真实考试" },
+    { tag: "morning",   text: "440+334全科联合模拟：用近年吉大真题做完整套题（定时），模拟真实考试" },
     { tag: "afternoon", text: "（随上午模拟继续，或下午评分+分析）\n新闻评论实务——随模拟卷完成" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 7月二刷阶段性总结（1h）：整理二刷多选错题本，统计各科错误率，找出最薄弱的2个章节" },
+    { tag: "english",   text: "🔵 2020年真题 Text 4 精读拆解（45min）；整理作文功能句库汇总版：大作文+小作文所有句型分类整理成一张表" }
   ],
   "2026-07-19": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲日：休息或整理模拟卷失分点" }
+    { tag: "politics",  text: "🔴 薄弱章节专项复习（30min）：重读二刷中错误率最高的那2章，只看概念" },
+    { tag: "english",   text: "🔵 休息或轻松浏览功能句库（20min）" },
+    { tag: "buffer",    text: "缓冲日：休息或整理模拟卷失分点" }
   ],
   "2026-07-20": [
-    { tag: "morning", text: "440补漏：针对全科模拟失分点，集中重读对应章节，重写2道论述答案" },
+    { tag: "morning",   text: "440补漏：针对全科模拟失分点，集中重读对应章节，重写2道论述答案" },
     { tag: "afternoon", text: "334补漏：针对全科模拟失分题型，重练2道实务题\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练 习近平新时代思想深化（1h）：重读「新发展理念+国家治理体系」，做1000题对应20题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第22篇（30min）；2021年真题 Text 1 做题（15min）" }
   ],
   "2026-07-21": [
-    { tag: "morning", text: "440强化：整理「新闻学+传播学」联合考点（如媒介融合同时涉及两本书），写综合论述" },
+    { tag: "morning",   text: "440强化：整理「新闻学+传播学」联合考点（如媒介融合同时涉及两本书），写综合论述" },
     { tag: "afternoon", text: "334强化：综合练习（消息+深度报道+评论连续作战，各限时）\n新闻评论实务——精品评论500字" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 1000题 全科综合多选专项（1h）：从错题本里找跨章节关联多选题，专项攻克" },
+    { tag: "english",   text: "🔵 2021年真题 Text 1 精读拆解（45min）；✏️写第6篇大作文：选2020年大作文题，限时30min，写完后修改" }
   ],
   "2026-07-22": [
-    { tag: "morning", text: "网络与新媒体概论：确认全书已完成（有遗漏今天补完）；做全书框架笔记" },
+    { tag: "morning",   text: "网络与新媒体概论：确认全书已完成（有遗漏今天补完）；做全书框架笔记" },
     { tag: "afternoon", text: "334强化：整理「新媒体实务」相关题型（网络新闻采写+新媒体策划），写一份模板\n新闻评论实务——精品评论500字" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 马原+毛中特高频考点默写（1h）：不看书默写10个核心名词解释，对照精讲精练纠错" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第23篇（30min）；2021年真题 Text 2 做题（15min）" }
   ],
   "2026-07-23": [
-    { tag: "morning", text: "440全科速记：默写「必背词条库」全部50条，纠错并记录掌握情况" },
+    { tag: "morning",   text: "440全科速记：默写「必背词条库」全部50条，纠错并记录掌握情况" },
     { tag: "afternoon", text: "334全科速记：背诵各体裁答题口诀，限时练习3道不同体裁题\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 近代史+思修高频主观题默写（1h）：写出3道大题的完整答案框架并背诵" },
+    { tag: "english",   text: "🔵 2021年真题 Text 2 精读拆解（45min）；写一封道歉信（小作文）限时15min，对照格式修改" }
   ],
   "2026-07-24": [
-    { tag: "morning", text: "440压轴：根据吉大出题风格，押3道可能出现的论述大题，写完整答案并背诵" },
+    { tag: "morning",   text: "440压轴：根据吉大出题风格，押3道可能出现的论述大题，写完整答案并背诵" },
     { tag: "afternoon", text: "334压轴：根据吉大出题风格，押2道综合实务题，写完整答案\n新闻评论实务——精品评论500字，反复打磨" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 时政专项整理（1h）：梳理2025年下半年～2026年上半年重要时政，按「国内/国际/社会」分类，写20条要点" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第24篇（30min）；2021年真题 Text 3 做题（15min）" }
   ],
   "2026-07-25": [
-    { tag: "morning", text: "440综合：背诵昨日押题答案；自测10道名词解释，全程限时" },
+    { tag: "morning",   text: "440综合：背诵昨日押题答案；自测10道名词解释，全程限时" },
     { tag: "afternoon", text: "334综合：整理基础阶段所有实务练习文章，选出最佳3篇作为范本\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 时政与教材联系整理（1h）：把时政热点和习近平新时代思想/当代世界章节对应，建立「时政答题素材库」" },
+    { tag: "english",   text: "🔵 2021年真题 Text 3 精读拆解（45min）；✏️写第7篇大作文：选2021年大作文题，限时30min" }
   ],
   "2026-07-26": [
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" },
-    { tag: "buffer", text: "缓冲日：整理本周内容，轻松复习；或彻底休息备战最后一周" }
+    { tag: "politics",  text: "🔴 整理本周内容，轻松复习；或休息" },
+    { tag: "english",   text: "🔵 评改第7篇大作文，汇总近期作文写作问题清单" },
+    { tag: "buffer",    text: "缓冲日：整理本周内容，轻松复习；或彻底休息" }
   ],
   "2026-07-27": [
-    { tag: "morning", text: "440最终整理：把「必背词条库」精简为最关键30条，做成随身卡片" },
+    { tag: "morning",   text: "440最终整理：把「必背词条库」精简为最关键30条，做成随身卡片" },
     { tag: "afternoon", text: "334最终整理：把3种体裁答题步骤做成随身卡片，确认下周验收准备完毕\n新闻评论实务——写500字完整评论" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 全科1000题错题本最终梳理（1h）：按章节统计错误题数，找出错误率>50%的章节，制定8月强化计划" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第25篇（30min）；2021年真题 Text 4 做题（15min）" }
   ],
   "2026-07-28": [
-    { tag: "morning", text: "440验收：完整作答一套440模拟卷（3h定时），按考试要求规范书写" },
+    { tag: "morning",   text: "440验收：完整作答一套440模拟卷（3h定时），按考试要求规范书写" },
     { tag: "afternoon", text: "334验收：完整作答一套334模拟卷（3h定时），按考试要求规范书写" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 精讲精练全书速查（1h）：对照错题本，回头查看答错的概念原文定义，做最后一轮确认" },
+    { tag: "english",   text: "🔵 2021年真题 Text 4 精读拆解（45min）" }
   ],
   "2026-07-29": [
-    { tag: "morning", text: "440验收评分：对照答案批改，统计得分，诚实评估薄弱板块" },
+    { tag: "morning",   text: "440验收评分：对照答案批改，统计得分，诚实评估薄弱板块" },
     { tag: "afternoon", text: "334验收评分：对照标准批改，评估实务答题质量，记录改进点" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 7月政治学习总结（1h）：记录二刷完成情况、多选错误率变化、主观题准备程度，写8月计划关键词" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第26篇（30min）；7月英语学习总结：统计真题完成量、作文篇数、确认作文主要问题" }
   ],
   "2026-07-30": [
-    { tag: "morning", text: "全科诊断：整理基础阶段学习总结，列出进入强化阶段的3个主攻方向" },
+    { tag: "morning",   text: "全科诊断：整理基础阶段学习总结，列出进入强化阶段的3个主攻方向" },
     { tag: "afternoon", text: "规划预告：初步梳理8月—11月强化阶段计划框架（不用细排，看方向即可）" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 自由复习：重读最薄弱的1个章节，不做题，只整理概念" },
+    { tag: "english",   text: "🔵 2022年真题 Text 1 做题+精读拆解（1h）" }
   ],
   "2026-07-31": [
-    { tag: "morning", text: "🎉 基础阶段正式结束！写一篇复盘日记：11本书读完了什么？哪里最扎实？哪里还要补？" },
+    { tag: "morning",   text: "🎉 基础阶段正式结束！写一篇复盘日记：11本书读完了什么？哪里最扎实？哪里还要补？" },
     { tag: "afternoon", text: "休息或轻松浏览：翻翻笔记、看看高频词条，给自己充个电" },
-    { tag: "politics", text: "政治学习（待定）1h" },
-    { tag: "english", text: "英语学习（待定）1h" }
+    { tag: "politics",  text: "🔴 阶段收官：默写全科10个最高频名词解释，对答案，感受自己的状态" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第27篇（30min）；回顾7篇大作文草稿，找出最好的1篇，读三遍体会结构感" }
+  ],
+  // ——— 8月 · 纯政治英语 ———
+  "2026-08-01": [
+    { tag: "politics",  text: "🔴 马原专题精讲（1.5h）：唯物辩证法全章节梳理，重点：矛盾的普遍性与特殊性+两点论与重点论" },
+    { tag: "english",   text: "🔵 2022年真题 Text 2 做题+精读拆解（1h）；写一篇建议信（小作文）限时20min，对照模板修改" }
+  ],
+  "2026-08-02": [
+    { tag: "politics",  text: "🔴 马原专题：认识论+实践论（1.5h）：整理「真理与价值」「认识的辩证发展」答题模板" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第28篇（30min）；2022年真题 Text 3 做题（15min）" }
+  ],
+  "2026-08-03": [
+    { tag: "politics",  text: "🔴 马原专题：唯物史观深化（1.5h）：社会基本矛盾运动+人民群众历史作用，写大题答题框架" },
+    { tag: "english",   text: "🔵 2022年真题 Text 3 精读拆解（45min）；✏️限时大作文练习①：选2022年大作文题，严格限时30min" }
+  ],
+  "2026-08-04": [
+    { tag: "politics",  text: "🔴 毛中特专题（1.5h）：新民主主义革命+社会主义改造理论，对照历年真题主观题练答案" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第29篇（30min）；2022年真题 Text 4 做题（15min）" }
+  ],
+  "2026-08-05": [
+    { tag: "politics",  text: "🔴 毛中特专题：中国特色社会主义建设（1.5h）：改革开放历史逻辑+经济体制改革脉络，写答题模板" },
+    { tag: "english",   text: "🔵 2022年真题 Text 4 精读拆解（45min）；自评8月第1篇大作文：结构完整吗？有没有跑题？" }
+  ],
+  "2026-08-06": [
+    { tag: "politics",  text: "🔴 1000题 马原多选专项冲刺（1.5h）：把二刷中依然错误的多选再做一遍，写每道题的错误原因" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第30篇（30min）；2023年真题 Text 1 做题（15min）" }
+  ],
+  "2026-08-07": [
+    { tag: "politics",  text: "🔴 习近平新时代思想专题（1.5h）：重点整理「五大发展理念+新发展格局+中国式现代化」答题素材" },
+    { tag: "english",   text: "🔵 2023年真题 Text 1 精读拆解（45min）；✏️限时小作文练习①：写一封邀请信，严格限时15min" }
+  ],
+  "2026-08-08": [
+    { tag: "politics",  text: "🔴 近代史专题（1.5h）：中国共产党各阶段历史任务系统梳理，整理「历次会议+历史转折点」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第31篇（30min）；2023年真题 Text 2 做题（15min）" }
+  ],
+  "2026-08-09": [
+    { tag: "politics",  text: "🔴 思修专题（1.5h）：人生观+价值观+爱国主义，整理「三观」相关大题答题框架" },
+    { tag: "english",   text: "🔵 2023年真题 Text 2 精读拆解（45min）；✏️限时大作文练习②：选2023年大作文题，严格限时30min" }
+  ],
+  "2026-08-10": [
+    { tag: "politics",  text: "🔴 当代世界专题（1.5h）：全球化+多极化+国际秩序，整理「中国在全球治理中的角色」答题素材" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第32篇（30min）；2023年真题 Text 3 做题（15min）" }
+  ],
+  "2026-08-11": [
+    { tag: "politics",  text: "🔴 全科主观题模拟①（1.5h）：从历年真题中选4道主观题，限时60min作答，然后对答案" },
+    { tag: "english",   text: "🔵 2023年真题 Text 3 精读拆解（45min）；自评第2篇大作文：重点看开头和结尾" }
+  ],
+  "2026-08-12": [
+    { tag: "politics",  text: "🔴 主观题模拟分析（1.5h）：批改昨天的主观题，对照标准答案找差距，整理「答题格式问题清单」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第33篇（30min）；2023年真题 Text 4 做题（15min）" }
+  ],
+  "2026-08-13": [
+    { tag: "politics",  text: "🔴 补漏（1.5h）：针对主观题模拟中答不上来的知识点，重读精讲精练对应内容，重写答案" },
+    { tag: "english",   text: "🔵 2023年真题 Text 4 精读拆解（45min）；✏️限时小作文练习②：写一封道歉信，严格限时15min" }
+  ],
+  "2026-08-14": [
+    { tag: "politics",  text: "🔴 时政热点深化（1.5h）：梳理2026年上半年重大国内外时事，整理5条「时政+教材」结合答题素材" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第34篇（30min）；✏️限时大作文练习③：自选近年大作文题，限时30min" }
+  ],
+  "2026-08-15": [
+    { tag: "politics",  text: "🔴 8月中期总结（1h）：记录专题复习进度，更新薄弱章节清单，调整下半月重点" },
+    { tag: "english",   text: "🔵 本周作文汇总评改（1h）：把本周写的大小作文对照功能句库逐句检查，总结共性问题" }
+  ],
+  "2026-08-16": [
+    { tag: "politics",  text: "🔴 休息，或轻松浏览错题本" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第35篇（30min）；轻松复习功能句库" }
+  ],
+  "2026-08-17": [
+    { tag: "politics",  text: "🔴 马原深化（1.5h）：重做马原所有多选错题，针对「辩证法」章节写5道模拟题自测" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习④：选近年真题，限时30min，之后找第1篇作文对比，看有无进步" }
+  ],
+  "2026-08-18": [
+    { tag: "politics",  text: "🔴 毛中特+习近平思想联合专题（1.5h）：梳理「改革开放历史→中国式现代化」理论发展脉络，建立「逻辑链答题法」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第36篇（30min）；完整做一套近3年完型填空（做题+对答案，不精讲）" }
+  ],
+  "2026-08-19": [
+    { tag: "politics",  text: "🔴 全科主观题模拟②（1.5h）：选5道主观题（含时政联系题），限时75min作答" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习③：写一封感谢信，限时15min；2024年真题 Text 1 做题+拆解（1h）" }
+  ],
+  "2026-08-20": [
+    { tag: "politics",  text: "🔴 主观题模拟②分析（1.5h）：对照标准答案批改，重点分析「时政联系题」有没有答到点上" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第37篇（30min）；2024年真题 Text 2 做题（15min）" }
+  ],
+  "2026-08-21": [
+    { tag: "politics",  text: "🔴 时政素材库扩充（1.5h）：整理2026年上半年重大会议/政策/事件，写20条要点；对应知识点标注" },
+    { tag: "english",   text: "🔵 2024年真题 Text 2 精读拆解（45min）；✏️限时大作文练习⑤：选近年真题，限时30min" }
+  ],
+  "2026-08-22": [
+    { tag: "politics",  text: "🔴 思修+法治深化（1.5h）：法律逻辑+道德修养的高频主观题模板，写3道完整答案并背诵" },
+    { tag: "english",   text: "🔵 2024年真题 Text 3 做题+精读拆解（1h）；作文问题清单整理：汇总8月所有作文的共性问题" }
+  ],
+  "2026-08-23": [
+    { tag: "politics",  text: "🔴 休息，或复习笔记" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第38篇（30min）；轻松复习功能句库" }
+  ],
+  "2026-08-24": [
+    { tag: "politics",  text: "🔴 1000题 全科多选最终清理（1.5h）：把所有标注「还模糊」的多选最后做一遍，靠自己判断" },
+    { tag: "english",   text: "🔵 2024年真题 Text 4 做题+拆解（1h）；✏️限时小作文练习④：写一则通知，限时15min" }
+  ],
+  "2026-08-25": [
+    { tag: "politics",  text: "🔴 主观题答题规范专练（1.5h）：练习「分点作答+关键词突出」的书写格式，重写3道之前答过的题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第39篇（30min）；8月阅读错题汇总：整理本月做错率最高的题型" }
+  ],
+  "2026-08-26": [
+    { tag: "politics",  text: "🔴 全科模拟主观题③（1.5h）：选6道历年主观题，限时90min，完整作答" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑥（1h）：选近年真题，限时30min；评改后计算「跑题率」" }
+  ],
+  "2026-08-27": [
+    { tag: "politics",  text: "🔴 主观题模拟③分析+补漏（1.5h）：对照答案批改，针对答不全的考点精读原文" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第40篇（30min）；整理「阅读迷惑选项规律笔记」：总结最常见的3种错误选项套路" }
+  ],
+  "2026-08-28": [
+    { tag: "politics",  text: "🔴 8月政治学习总结（1.5h）：记录专题复习成果，更新主观题准备清单，写9月计划要点" },
+    { tag: "english",   text: "🔵 8月英语学习总结（1h）：统计作文完成篇数（目标≥8篇）、阅读准确率趋势、原刊篇数；写9月作文练习重点" }
+  ],
+  "2026-08-29": [
+    { tag: "politics",  text: "🔴 休息，或轻松翻阅笔记" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第41篇（30min）；轻松复习功能句库" }
+  ],
+  "2026-08-30": [
+    { tag: "politics",  text: "🔴 翻阅错题本，圈出9月需要重点攻克的章节（不超过3个）" },
+    { tag: "english",   text: "🔵 回顾全部8篇以上大作文草稿，找出结构最完整的一篇，默读3遍" }
+  ],
+  "2026-08-31": [
+    { tag: "politics",  text: "🔴 精讲精练重读①（1.5h）：重读9月计划中选定的第1个薄弱章节，只读不做题" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第42篇（30min）；✏️限时大作文练习⑦：限时30min" }
+  ],
+  // ——— 9月 ———
+  "2026-09-01": [
+    { tag: "politics",  text: "🔴 马原薄弱章节精读（1.5h）：精读选定的薄弱章节，做对应1000题所有多选" },
+    { tag: "english",   text: "🔵 2022年英语一完整套卷模拟（含阅读+完型+翻译+作文，计时2.5h）；记录各题型得分" }
+  ],
+  "2026-09-02": [
+    { tag: "politics",  text: "🔴 套卷模拟①（1.5h）：做一套历年政治真题客观题（单选+多选），限时75min，对答案分析" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第43篇（30min）；精讲昨天套卷的作文部分：对照功能句库，逐句分析得分点" }
+  ],
+  "2026-09-03": [
+    { tag: "politics",  text: "🔴 套卷分析+补漏（1.5h）：对照客观题答案，分析各科错误率，重点复习错误集中的章节" },
+    { tag: "english",   text: "🔵 2023年英语一完整套卷模拟（计时2.5h）；记录各题型得分，与上次对比" }
+  ],
+  "2026-09-04": [
+    { tag: "politics",  text: "🔴 毛中特+习近平思想专题（1.5h）：练5道主观题，重点练「时政联系+理论依据」双结合答法" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第44篇（30min）；精讲昨天套卷的阅读和翻译部分，整理错题" }
+  ],
+  "2026-09-05": [
+    { tag: "politics",  text: "🔴 全科知识框架大梳理（1.5h）：用思维导图整理全科知识体系，确认没有大的知识空白" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑧：限时30min，写完后和之前7篇对比，找进步和退步的地方" }
+  ],
+  "2026-09-06": [
+    { tag: "politics",  text: "🔴 休息，或复习时政素材" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第45篇（30min）；整理翻译题笔记：总结常见错误" }
+  ],
+  "2026-09-07": [
+    { tag: "politics",  text: "🔴 套卷模拟②（1.5h）：再做一套历年政治真题客观题，重点检验多选题错误率是否下降" },
+    { tag: "english",   text: "🔵 2024年英语一完整套卷模拟（计时2.5h）；记录各题型得分，与之前两次对比" }
+  ],
+  "2026-09-08": [
+    { tag: "politics",  text: "🔴 近代史+思修专项主观题（1.5h）：选4道近代史大题、2道思修大题，限时作答" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第46篇（30min）；精讲昨天套卷的完型填空部分：总结完型做题技巧" }
+  ],
+  "2026-09-09": [
+    { tag: "politics",  text: "🔴 时政专题更新（1.5h）：更新至最新时政热点，补充素材库；做历年时政相关主观题2道" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习⑤：写一封建议信，限时15min；作文问题清单更新" }
+  ],
+  "2026-09-10": [
+    { tag: "politics",  text: "🔴 马原多选终极清单（1.5h）：把所有做错3次以上的多选汇总，写一张「死亡多选清单」，重点背" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第47篇（30min）；2022-2024年大作文真题专项：读3篇历年高分范文，分析套路" }
+  ],
+  "2026-09-14": [
+    { tag: "politics",  text: "🔴 套卷模拟③（1.5h）：做第3套政治真题客观题，多选题错误率目标<30%" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑨：限时30min，写完后先自查主题，重点关注「是否跑题」" }
+  ],
+  "2026-09-15": [
+    { tag: "politics",  text: "🔴 全科主观题综合模拟（1.5h）：选6道主观题（各科均衡），限时90min，规范作答" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第48篇（30min）；阅读专项：把近期做错率最高的题型集中再练5题" }
+  ],
+  "2026-09-20": [
+    { tag: "politics",  text: "🔴 9月政治总结（1h）：客观题各科错误率记录；主观题准备情况；时政覆盖程度自评" },
+    { tag: "english",   text: "🔵 9月英语总结（1h）：套卷总分趋势；作文跑题率是否改善；翻译和完型进度评估" }
+  ],
+  "2026-09-30": [
+    { tag: "politics",  text: "🔴 全科知识点自测（1h）：30道不看书的自测题，评估知识点掌握程度" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑩：限时30min；📰扇贝原刊第49篇" }
+  ],
+  // ——— 10月 ———
+  "2026-10-07": [
+    { tag: "politics",  text: "🔴 套卷客观题（1.5h）：做一套完整历年真题客观题，限时75min，统计错误率" },
+    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段（各30min）" }
+  ],
+  "2026-10-08": [
+    { tag: "politics",  text: "🔴 主观题专练（1.5h）：选3道主观题限时作答，重点练「关键词突出+分点作答」格式" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第50篇（30min）；真题阅读Text 1-2做题+拆解（1h）" }
+  ],
+  "2026-10-09": [
+    { tag: "politics",  text: "🔴 时政专题更新（1.5h）：整合最新热点素材，更新时政素材库" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑪（30min）；自评跑题问题" }
+  ],
+  "2026-10-10": [
+    { tag: "politics",  text: "🔴 错题+补弱（1.5h）：回顾本周客观题错题，针对性精读精讲精练原文" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第51篇（30min）；真题阅读Text 3-4做题+拆解（1h）" }
+  ],
+  "2026-10-11": [
+    { tag: "politics",  text: "🔴 背诵（1.5h）：背诵2道核心主观题答案模板，脱书能写出框架" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习⑥（15min），对照模板修改" }
+  ],
+  "2026-10-12": [
+    { tag: "politics",  text: "🔴 综合套卷模拟（2.5h）：做完整套卷（含客观题+主观题，限时2.5h）" },
+    { tag: "english",   text: "🔵 本周作文汇总评改" }
+  ],
+  "2026-10-13": [
+    { tag: "politics",  text: "🔴 本周复盘（1h）：记录进度，或休息" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第52篇（30min）；轻松复习功能句库" }
+  ],
+  "2026-10-15": [
+    { tag: "politics",  text: "🔴 套卷客观题（1.5h）：本月第2套，检验进度" },
+    { tag: "english",   text: "🔵 完整英语真题套卷模拟（含所有题型，计时），目标80分" }
+  ],
+  "2026-10-31": [
+    { tag: "politics",  text: "🔴 政治月度总结（1h）：记录各科客观题错误率趋势，制定11月冲刺重点" },
+    { tag: "english",   text: "🔵 英语月度总结（1h）：评估阅读准确率、作文进步情况，写11月备考要点" }
+  ],
+  // ——— 11月 · 肖八 ———
+  "2026-11-03": [
+    { tag: "politics",  text: "🔴 肖八第1套客观题（单选+多选，限时75min），对答案统计正确率" },
+    { tag: "english",   text: "🔵 全题型模拟套卷（2.5h，计时），记录各题型分数" }
+  ],
+  "2026-11-04": [
+    { tag: "politics",  text: "🔴 分析第1套肖八客观题错误，回头看精讲精练对应原文" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲昨天套卷阅读部分错题" }
+  ],
+  "2026-11-05": [
+    { tag: "politics",  text: "🔴 研究肖八主观题题目：找规律，判断今年可能考哪个方向" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；背诵大作文开头段模板（5句）" }
+  ],
+  "2026-11-06": [
+    { tag: "politics",  text: "🔴 肖八第1套多选错题重做，加入「死亡多选清单」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+  ],
+  "2026-11-07": [
+    { tag: "politics",  text: "🔴 背诵3道核心主观题答案框架（脱稿默写）" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；背诵小作文各类型开头结尾句" }
+  ],
+  "2026-11-08": [
+    { tag: "politics",  text: "🔴 肖八第2套客观题（提速，目标用时65min）" },
+    { tag: "english",   text: "🔵 本周所有练习汇总评改，统计大作文跑题率" }
+  ],
+  "2026-11-09": [
+    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总，写「考前错题清单」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵功能句库重点句型" }
+  ],
+  "2026-11-15": [
+    { tag: "politics",  text: "🔴 肖八前4套客观题全部完成节点检验：统计4套平均正确率，找出薄弱章节" },
+    { tag: "english",   text: "🔵 全题型模拟套卷，目标比上次提高3-5分" }
+  ],
+  "2026-11-25": [
+    { tag: "politics",  text: "🔴 肖八全8套完成！整理「高频主观题方向清单」，开始有针对性地准备大题素材" },
+    { tag: "english",   text: "🔵 大作文专项：检查累计完成篇数，目标≥15篇；选最好的2篇背诵" }
+  ],
+  "2026-11-30": [
+    { tag: "politics",  text: "🔴 11月政治总结：肖八客观题正确率趋势；大题准备程度；制定12月冲刺计划" },
+    { tag: "english",   text: "🔵 11月英语总结：大作文完成情况（目标≥15篇，不跑题率>85%）；模板背诵进度" }
+  ],
+  // ——— 12月 · 最终冲刺 ———
+  "2026-12-01": [
+    { tag: "politics",  text: "🔴 肖四出版！立刻做第1套客观题；研读大题题目，今天背第1道大题" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读（保温）；押题大作文①：写+背" }
+  ],
+  "2026-12-02": [
+    { tag: "politics",  text: "🔴 分析肖四第1套客观题错误；继续背大题（每天1-2道）" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；押题小作文①：写+背格式" }
+  ],
+  "2026-12-03": [
+    { tag: "politics",  text: "🔴 大题背诵继续；时政最新热点最终梳理（只补最近2周的新增内容）" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；押题大作文②写+背" }
+  ],
+  "2026-12-08": [
+    { tag: "politics",  text: "🔴 肖四第2套客观题；大题继续背（目标每天1-2道，背到能默写框架）" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；押题小作文②写+背" }
+  ],
+  "2026-12-15": [
+    { tag: "politics",  text: "🔴 肖四第3-4套客观题；重点大题反复默写，能独立写出关键段落" },
+    { tag: "english",   text: "🔵 停止写新作文！专注背诵2篇大作文+2篇小作文模板" }
+  ],
+  "2026-12-20": [
+    { tag: "politics",  text: "🔴 每天早上背大题（选2道）；考前3天只看「死亡多选清单」+大题框架" },
+    { tag: "english",   text: "🔵 每天1篇阅读（保温），轻松读功能句库；倒计时模式：只背不练新题" }
+  ],
+  "2026-12-24": [
+    { tag: "politics",  text: "🔴 考前最后复习：大题框架默写一遍，「死亡多选清单」过一遍，早点睡" },
+    { tag: "english",   text: "🔵 轻松读作文模板，早点睡，明天就是你的" }
+  ],
+  // ——— 追加：v4.1 补充日期（9月11日–12月23日缺失部分）———
+  "2026-09-11": [
+    { tag: "politics",  text: "🔴 马原多选终极清单（1.5h）：把所有做错3次以上的多选题汇总，写「死亡多选清单」，重点背" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第47篇（30min）；2022-2024年作文真题专项：读3篇历年高分作文范文，分析套路" }
+  ],
+  "2026-09-12": [
+    { tag: "politics",  text: "🔴 全科知识点自测（1h）：不看书做30道自测题，评估知识点掌握程度" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑨：限时30min，写完后先自查主题，重点关注是否跑题" }
+  ],
+  "2026-09-13": [
+    { tag: "politics",  text: "🔴 休息 或 轻松翻阅时政素材" },
+    { tag: "english",   text: "🔵 本周作文汇总评改，统计近期跑题情况" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-09-16": [
+    { tag: "politics",  text: "🔴 全科主观题综合模拟（1.5h）：选6道主观题，限时90min，规范作答" },
+    { tag: "english",   text: "🔵 精讲9月套卷中的薄弱题型；整理近期翻译常见错误" }
+  ],
+  "2026-09-17": [
+    { tag: "politics",  text: "🔴 马原+毛中特高频考点默写（1h）：不看书写10个核心名词解释，对答案" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第49篇（30min）；✏️限时大作文练习⑩：限时30min" }
+  ],
+  "2026-09-18": [
+    { tag: "politics",  text: "🔴 近代史+思修大题框架默写（1h）：不看书写出4道主观题答案框架" },
+    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段（各30min）" }
+  ],
+  "2026-09-19": [
+    { tag: "politics",  text: "🔴 时政素材库最新更新（1.5h）：补充至9月最新热点" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第50篇（30min）；本周套卷/练题汇总回顾" }
+  ],
+  "2026-09-21": [
+    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+  ],
+  "2026-09-22": [
+    { tag: "politics",  text: "🔴 套卷模拟④（1.5h）：第4套历年政治真题客观题，持续检验进度" },
+    { tag: "english",   text: "🔵 完整英语真题套卷模拟（2.5h，计时），记录各题型得分" }
+  ],
+  "2026-09-23": [
+    { tag: "politics",  text: "🔴 主观题专项练习（1.5h）：选3道主观题限时作答，重点练分点作答格式" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第51篇（30min）；精讲昨天套卷的阅读错题" }
+  ],
+  "2026-09-24": [
+    { tag: "politics",  text: "🔴 时政专题更新（1.5h）：整合最新热点素材" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习⑪：限时30min；自评跑题问题" }
+  ],
+  "2026-09-25": [
+    { tag: "politics",  text: "🔴 错题+补弱（1.5h）：回顾本周客观题错题，针对性精读精讲精练原文" },
+    { tag: "english",   text: "🔵 📰扇贝原刊第52篇（30min）；真题阅读Text 3-4做题+拆解（1h）" }
+  ],
+  "2026-09-26": [
+    { tag: "politics",  text: "🔴 背诵2道核心主观题答案模板（不看书能写出框架）" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习⑥（15min），对照模板修改" }
+  ],
+  "2026-09-27": [
+    { tag: "politics",  text: "🔴 综合套卷模拟（2.5h）：含客观题+主观题，完整作答" },
+    { tag: "english",   text: "🔵 本周作文汇总评改" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-09-28": [
+    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+  ],
+  "2026-10-06": [
+    { tag: "politics",  text: "🔴 做一套完整历年真题客观题（含单选+多选），限时75min，统计错误率" },
+    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段（各30min）" }
+  ],
+  "2026-10-14": [
+    { tag: "politics",  text: "🔴 本周复盘，记录进度；或休息" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；轻松复习功能句库" }
+  ],
+  "2026-10-16": [
+    { tag: "politics",  text: "🔴 选3道主观题限时作答" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲昨天套卷的阅读错题" }
+  ],
+  "2026-10-17": [
+    { tag: "politics",  text: "🔴 错题回顾+补弱，针对性精读精讲精练原文" },
+    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段" }
+  ],
+  "2026-10-18": [
+    { tag: "politics",  text: "🔴 背诵2道核心主观题答案模板" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；评改" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-10-19": [
+    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+  ],
+  "2026-10-20": [
+    { tag: "politics",  text: "🔴 做一套完整历年真题客观题（含单选+多选），限时75min" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；真题阅读Text 1-2做题+拆解（1h）" }
+  ],
+  "2026-10-21": [
+    { tag: "politics",  text: "🔴 主观题专练（1.5h）：选3道主观题限时作答" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；对照模板修改" }
+  ],
+  "2026-10-22": [
+    { tag: "politics",  text: "🔴 时政专题更新，整合最新热点素材" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；真题阅读Text 3-4做题+拆解（1h）" }
+  ],
+  "2026-10-23": [
+    { tag: "politics",  text: "🔴 错题+补弱（1.5h）：回顾本周客观题错题" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；自评跑题问题" }
+  ],
+  "2026-10-24": [
+    { tag: "politics",  text: "🔴 背诵2道核心主观题答案模板，脱书能写出框架" },
+    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段" }
+  ],
+  "2026-10-25": [
+    { tag: "politics",  text: "🔴 做完整套卷模拟（含客观题+主观题，2.5h）" },
+    { tag: "english",   text: "🔵 本周作文汇总评改" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-10-26": [
+    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+  ],
+  "2026-10-27": [
+    { tag: "politics",  text: "🔴 做一套完整历年真题客观题，限时75min" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；真题阅读Text 1-2做题+拆解（1h）" }
+  ],
+  "2026-10-28": [
+    { tag: "politics",  text: "🔴 主观题专练（1.5h）：选3道主观题，重点练规范格式" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；对照模板修改" }
+  ],
+  "2026-10-29": [
+    { tag: "politics",  text: "🔴 时政专题更新，整合最新热点素材" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；✏️限时大作文练习（30min）" }
+  ],
+  "2026-10-30": [
+    { tag: "politics",  text: "🔴 本周复盘+错题回顾" },
+    { tag: "english",   text: "🔵 本周作文汇总评改" }
+  ],
+  "2026-11-10": [
+    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总，写「考前错题清单」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵功能句库重点句型" }
+  ],
+  "2026-11-11": [
+    { tag: "politics",  text: "🔴 肖八第3套客观题，限时75min" },
+    { tag: "english",   text: "🔵 全题型模拟套卷（2.5h，计时），记录各题型分数" }
+  ],
+  "2026-11-12": [
+    { tag: "politics",  text: "🔴 分析第3套肖八客观题错误，精读对应原文" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲昨天套卷阅读部分错题" }
+  ],
+  "2026-11-13": [
+    { tag: "politics",  text: "🔴 研究肖八3-4套主观题方向，补充大题素材库" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；背诵大作文开头段模板" }
+  ],
+  "2026-11-14": [
+    { tag: "politics",  text: "🔴 肖八第3套多选错题重做，更新「死亡多选清单」" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+  ],
+  "2026-11-16": [
+    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+  ],
+  "2026-11-17": [
+    { tag: "politics",  text: "🔴 肖八第4套客观题，提速练习" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；背诵小作文各类型开头结尾句" }
+  ],
+  "2026-11-18": [
+    { tag: "politics",  text: "🔴 第4套错题分析，回头看精讲精练对应原文" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲套卷阅读部分错题" }
+  ],
+  "2026-11-19": [
+    { tag: "politics",  text: "🔴 背诵3道核心主观题答案框架（脱稿默写）" },
+    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；背诵大作文开头段模板（5句）" }
+  ],
+  "2026-11-20": [
+    { tag: "politics",  text: "🔴 肖八第5套客观题（限时70min）" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+  ],
+  "2026-11-21": [
+    { tag: "politics",  text: "🔴 第5套错题重做，更新「死亡多选清单」" },
+    { tag: "english",   text: "🔵 本周所有练习汇总评改，统计大作文跑题率" }
+  ],
+  "2026-11-22": [
+    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵功能句库重点句型" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-11-23": [
+    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+  ],
+  "2026-11-24": [
+    { tag: "politics",  text: "🔴 肖八第6套客观题，持续提速" },
+    { tag: "english",   text: "🔵 全题型模拟套卷（2.5h，计时），记录各题型分数" }
+  ],
+  "2026-11-26": [
+    { tag: "politics",  text: "🔴 肖八第7-8套客观题；错题汇总，重点背死亡多选清单" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；✏️限时大作文练习（30min）" }
+  ],
+  "2026-11-27": [
+    { tag: "politics",  text: "🔴 高频主观题方向：选3道最重要的题，写完整答案框架" },
+    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；背诵小作文各类型开头结尾句" }
+  ],
+  "2026-11-28": [
+    { tag: "politics",  text: "🔴 背诵3道核心主观题答案框架，脱稿默写" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+  ],
+  "2026-11-29": [
+    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总，更新考前错题清单" },
+    { tag: "english",   text: "🔵 本周所有练习汇总评改，统计大作文跑题率" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-12-04": [
+    { tag: "politics",  text: "🔴 肖四第1套大题重读，比对答案，找缺漏知识点" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵押题大作文①，能默写80%" }
+  ],
+  "2026-12-05": [
+    { tag: "politics",  text: "🔴 死亡多选清单过一遍；背诵2道大题" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；押题小作文②写+背" }
+  ],
+  "2026-12-06": [
+    { tag: "politics",  text: "🔴 休息 或 轻松翻阅大题框架" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松复习作文模板" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-12-07": [
+    { tag: "buffer",    text: "休息日：今天不安排新任务，好好休息" }
+  ],
+  "2026-12-09": [
+    { tag: "politics",  text: "🔴 第2套客观题错误分析；大题背诵继续" },
+    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵押题大作文②，能默写80%" }
+  ],
+  "2026-12-10": [
+    { tag: "politics",  text: "🔴 大题背诵；时政最新热点最终梳理" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；押题大作文③写+背" }
+  ],
+  "2026-12-11": [
+    { tag: "politics",  text: "🔴 死亡多选清单过一遍；背诵2道大题" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵押题小作文①②" }
+  ],
+  "2026-12-12": [
+    { tag: "politics",  text: "🔴 肖四第3套客观题；背诵2道大题" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵押题大作文③" }
+  ],
+  "2026-12-13": [
+    { tag: "politics",  text: "🔴 休息 或 轻松翻阅大题框架" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松复习功能句库" },
+    { tag: "buffer",    text: "休息/缓冲" }
+  ],
+  "2026-12-14": [
+    { tag: "buffer",    text: "休息日：今天不安排新任务，好好休息" }
+  ],
+  "2026-12-16": [
+    { tag: "politics",  text: "🔴 第4套客观题错误分析；大题背诵继续" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读（保温）；复习背诵的作文模板" }
+  ],
+  "2026-12-17": [
+    { tag: "politics",  text: "🔴 大题默写①：选3道最重要的大题，完整默写，检查覆盖率" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松读功能句库" }
+  ],
+  "2026-12-18": [
+    { tag: "politics",  text: "🔴 死亡多选清单最终过一遍" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵所有押题作文模板各一遍" }
+  ],
+  "2026-12-19": [
+    { tag: "politics",  text: "🔴 大题默写②：再选3道，完整默写" },
+    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松复习功能句库" }
+  ],
+  "2026-12-21": [
+    { tag: "buffer",    text: "休息日：今天不安排新任务，好好休息" }
+  ],
+  "2026-12-22": [
+    { tag: "politics",  text: "🔴 大题框架默写一遍；死亡多选清单再过一遍" },
+    { tag: "english",   text: "🔵 每天1篇阅读（保温）；复习押题大作文+小作文模板" }
+  ],
+  "2026-12-23": [
+    { tag: "politics",  text: "🔴 考前倒计时：死亡多选清单+大题框架最后一遍，放松心态" },
+    { tag: "english",   text: "🔵 轻松读作文模板；放松，别做新题" }
   ]
+
 };
 
-// ===== TAG CONFIG =====
+// ===================================================================
+// TAG CONFIG
+// ===================================================================
 const TAG_CONFIG = {
-  morning: { label: "☀️ 上午·理论", cls: "tag-morning" },
-  afternoon: { label: "🌤️ 下午·实务", cls: "tag-afternoon" },
-  politics: { label: "🔴 政治", cls: "tag-politics" },
-  english: { label: "🔵 英语", cls: "tag-english" },
-  buffer: { label: "💜 缓冲/休息", cls: "tag-buffer" }
+  morning:   { label: "☀️ 上午·理论",   cls: "tag-morning" },
+  afternoon: { label: "🌤️ 下午·实务",  cls: "tag-afternoon" },
+  politics:  { label: "🔴 政治",        cls: "tag-politics" },
+  english:   { label: "🔵 英语",        cls: "tag-english" },
+  buffer:    { label: "💜 缓冲/休息",   cls: "tag-buffer" }
 };
 
-// ===== STATE =====
-const EXAM_DATE = new Date('2026-12-26');
+// ===================================================================
+// STATE
+// ===================================================================
+const EXAM_DATE  = new Date('2026-12-25');
 const START_DATE = new Date('2026-04-21');
-let currentDate = new Date();
-// Normalize to local date
+let currentDate  = new Date();
 currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
 
-// ===== STORAGE =====
-function getStorageKey(dateStr, idx) {
-  return `yuanbao_task_${dateStr}_${idx}`;
-}
-
-function isTaskCompleted(dateStr, idx) {
-  return localStorage.getItem(getStorageKey(dateStr, idx)) === '1';
-}
-
+// ===================================================================
+// STORAGE
+// ===================================================================
+function getKey(dateStr, idx) { return `yuanbao_task_${dateStr}_${idx}`; }
+function isDone(dateStr, idx) { return localStorage.getItem(getKey(dateStr, idx)) === '1'; }
 function toggleTask(dateStr, idx) {
-  const key = getStorageKey(dateStr, idx);
-  if (localStorage.getItem(key) === '1') {
-    localStorage.removeItem(key);
-  } else {
-    localStorage.setItem(key, '1');
-  }
+  const k = getKey(dateStr, idx);
+  localStorage.getItem(k) === '1' ? localStorage.removeItem(k) : localStorage.setItem(k, '1');
   render();
 }
 
-// ===== HELPERS =====
-function formatDate(d) {
-  const m = d.getMonth() + 1;
-  const day = d.getDate();
-  return `${m}月${day}日`;
-}
-
+// ===================================================================
+// HELPERS
+// ===================================================================
 function dateToStr(d) {
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${y}-${m}-${day}`;
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
-
-function getWeekday(d) {
-  const days = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-  return days[d.getDay()];
-}
-
+function formatDate(d) { return `${d.getMonth()+1}月${d.getDate()}日`; }
+function getWeekday(d) { return ['周日','周一','周二','周三','周四','周五','周六'][d.getDay()]; }
 function isToday(d) {
-  const now = new Date();
-  return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth() && d.getDate() === now.getDate();
+  const n = new Date();
+  return d.getFullYear()===n.getFullYear() && d.getMonth()===n.getMonth() && d.getDate()===n.getDate();
 }
+function daysBetween(a,b) { return Math.floor((b-a)/(1000*60*60*24)); }
 
-function daysBetween(a, b) {
-  return Math.floor((b - a) / (1000 * 60 * 60 * 24));
-}
-
-// ===== MOTIVATIONAL QUOTES =====
+// ===================================================================
+// MOTIVATIONAL QUOTES
+// ===================================================================
 const QUOTES = [
   "每一天的坚持都在为未来的自己铺路 🌟",
   "慢慢来，比较快 🐢✨",
@@ -987,161 +1772,129 @@ const QUOTES = [
   "休息也是备考的一部分 ☕",
   "你已经很棒了，继续加油 🌈",
   "学不进去的时候就出去走走，回来再战 🍃",
-  "坚持到最后的人，运气都不会太差 🍀"
+  "坚持到最后的人，运气都不会太差 🍀",
+  "360分的你已经很厉害了，这次加10分就够了 ⭐",
+  "吉大新传，苑宝的位置，早就留着了 🏛️",
+  "不是考不上，是还没到时候 🌙"
 ];
-
 function getMotivation() {
-  const today = new Date();
-  const idx = (today.getFullYear() * 366 + today.getMonth() * 31 + today.getDate()) % QUOTES.length;
+  const t = new Date();
+  const idx = (t.getFullYear()*366 + t.getMonth()*31 + t.getDate()) % QUOTES.length;
   return QUOTES[idx];
 }
 
-// ===== RENDER =====
+// ===================================================================
+// RIPPLE EFFECT
+// ===================================================================
+function addRipple(card, e) {
+  const rect = card.getBoundingClientRect();
+  const x = (e.clientX || rect.left + rect.width/2) - rect.left;
+  const y = (e.clientY || rect.top  + rect.height/2) - rect.top;
+  const r = document.createElement('div');
+  r.className = 'ripple';
+  r.style.cssText = `left:${x}px;top:${y}px;width:60px;height:60px;margin-left:-30px;margin-top:-30px;`;
+  card.appendChild(r);
+  setTimeout(() => r.remove(), 600);
+}
+
+// ===================================================================
+// MAKE CARD
+// ===================================================================
+function makeCard(dateStr, task, idx, isOverdue, overdueDateStr) {
+  const done = isDone(dateStr, idx);
+  const tagInfo = TAG_CONFIG[task.tag] || { label: task.tag, cls: 'tag-buffer' };
+  const card = document.createElement('div');
+  card.className = 'task-card' + (done ? ' completed' : '') + (isOverdue ? ' overdue-card' : '');
+  card.onclick = function(e) {
+    addRipple(card, e);
+    setTimeout(function() { toggleTask(dateStr, idx); }, 120);
+  };
+  const overdueHtml = isOverdue
+    ? '<div class="overdue-date">📌 ' + (function(){ const d=new Date(overdueDateStr); return (d.getMonth()+1)+'月'+d.getDate()+'日'; })() + '</div>'
+    : '';
+  card.innerHTML = '<div class="task-check"><svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div><div class="task-content">' + overdueHtml + '<span class="task-tag ' + tagInfo.cls + '">' + tagInfo.label + '</span><div class="task-text">' + task.text.replace(/\n/g,'<br>') + '</div></div>';
+  return card;
+}
+
+// ===================================================================
+// RENDER
+// ===================================================================
 function render() {
   const dateStr = dateToStr(currentDate);
   const tasks = PLAN_DATA[dateStr] || [];
-
-  // Update header counters
   const now = new Date();
   const todayNorm = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const daysToExam = daysBetween(todayNorm, EXAM_DATE);
-  document.getElementById('countdown-days').textContent = daysToExam > 0 ? daysToExam : 0;
 
-  const daysStudied = daysBetween(START_DATE, todayNorm);
-  document.getElementById('study-days').textContent = Math.max(0, daysStudied);
-
-  // Count total completed tasks
+  document.getElementById('countdown-days').textContent = Math.max(0, daysBetween(todayNorm, EXAM_DATE));
+  document.getElementById('study-days').textContent = Math.max(0, daysBetween(START_DATE, todayNorm));
   let totalChecked = 0;
-  for (const key in localStorage) {
-    if (key.startsWith('yuanbao_task_') && localStorage[key] === '1') totalChecked++;
-  }
+  for (const k in localStorage) { if (k.startsWith('yuanbao_task_') && localStorage[k]==='1') totalChecked++; }
   document.getElementById('total-checked').textContent = totalChecked;
 
-  // Update date display
-  document.getElementById('main-date').textContent = `${currentDate.getFullYear()}年${formatDate(currentDate)}`;
-  const weekday = getWeekday(currentDate);
-  const todayLabel = isToday(currentDate) ? ' · 今天' : '';
-  document.getElementById('weekday').textContent = weekday + todayLabel;
+  document.getElementById('main-date').textContent = currentDate.getFullYear() + "年" + formatDate(currentDate);
+  document.getElementById('weekday').textContent = getWeekday(currentDate) + (isToday(currentDate) ? ' · 今天' : '');
 
-  // Update progress
   let completed = 0;
-  tasks.forEach((t, i) => { if (isTaskCompleted(dateStr, i)) completed++; });
+  tasks.forEach(function(_,i) { if (isDone(dateStr,i)) completed++; });
   const total = tasks.length;
-  document.getElementById('progress-count').textContent = `${completed}/${total}`;
-  document.getElementById('progress-fill').style.width = total > 0 ? `${(completed / total) * 100}%` : '0%';
+  document.getElementById('progress-count').textContent = completed + '/' + total;
+  document.getElementById('progress-fill').style.width = total > 0 ? ((completed/total)*100) + '%' : '0%';
 
-  // Render tasks
-  const taskList = document.getElementById('task-list');
-  if (tasks.length === 0) {
-    // Check if date is in range
-    const allDates = Object.keys(PLAN_DATA).sort();
-    const first = allDates[0];
-    const last = allDates[allDates.length - 1];
-    if (dateStr < first || dateStr > last) {
-      taskList.innerHTML = `<div class="empty-state"><div class="emoji">📅</div><p>这一天暂时还没有安排哦～<br>v3计划覆盖 4月21日 到 7月31日</p></div>`;
-    } else {
-      taskList.innerHTML = `<div class="empty-state"><div class="emoji">🌸</div><p>今天没有安排任务<br>好好休息，养精蓄锐～</p></div>`;
-    }
-    document.getElementById('tasks-title').textContent = '📝 当日任务';
+  let phaseHtml = '';
+  if (dateStr < '2026-06-01') {
+    phaseHtml = '<div class="phase-pill phase-course">📖 阶段一：专业课冲刺</div>';
+  } else if (dateStr <= '2026-07-31') {
+    phaseHtml = '<div class="phase-pill phase-plus">📖+🔴+🔵 阶段二：三线并行</div>';
   } else {
-    let allDone = completed === total;
-    if (allDone) {
-      taskList.innerHTML = `<div class="all-done"><div class="emoji">🎉</div><p class="big">全部完成啦！</p><p>今天的任务都搞定了，太棒了！<br>点击任务可以取消打卡</p></div>`;
-    } else {
-      taskList.innerHTML = '';
-    }
-
-    tasks.forEach((task, idx) => {
-      const done = isTaskCompleted(dateStr, idx);
-      if (allDone && done) return; // We showed the all-done message
-
-      const tagInfo = TAG_CONFIG[task.tag] || { label: task.tag, cls: 'tag-buffer' };
-      const card = document.createElement('div');
-      card.className = `task-card${done ? ' completed' : ''}`;
-      card.onclick = () => toggleTask(dateStr, idx);
-
-      const textHtml = task.text.replace(/\n/g, '<br>');
-      card.innerHTML = `
-        <div class="task-check">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        </div>
-        <div class="task-content">
-          <span class="task-tag ${tagInfo.cls}">${tagInfo.label}</span>
-          <div class="task-text">${textHtml}</div>
-        </div>
-      `;
-      taskList.appendChild(card);
-    });
-
-    // If all done, re-render completed tasks below so they can be unchecked
-    if (allDone) {
-      tasks.forEach((task, idx) => {
-        const tagInfo = TAG_CONFIG[task.tag] || { label: task.tag, cls: 'tag-buffer' };
-        const card = document.createElement('div');
-        card.className = 'task-card completed';
-        card.onclick = () => toggleTask(dateStr, idx);
-        const textHtml = task.text.replace(/\n/g, '<br>');
-        card.innerHTML = `
-          <div class="task-check">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
-          <div class="task-content">
-            <span class="task-tag ${tagInfo.cls}">${tagInfo.label}</span>
-            <div class="task-text">${textHtml}</div>
-          </div>
-        `;
-        taskList.appendChild(card);
-      });
-    }
-
-    document.getElementById('tasks-title').textContent = isToday(currentDate) ? '📝 今日任务' : `📝 ${formatDate(currentDate)}的任务`;
+    phaseHtml = '<div class="phase-pill phase-final">🔴+🔵 阶段三：政治英语冲刺</div>';
   }
 
-  // Render overdue tasks (only show when viewing today)
+  const taskList = document.getElementById('task-list');
+
+  if (tasks.length === 0) {
+    const allDates = Object.keys(PLAN_DATA).sort();
+    const inRange = dateStr >= allDates[0] && dateStr <= allDates[allDates.length-1];
+    taskList.innerHTML = phaseHtml + (inRange
+      ? '<div class="empty-state"><span class="emoji">🌸</span><p>今天没有安排任务<br>好好休息，养精蓄锐～</p></div>'
+      : '<div class="empty-state"><span class="emoji">📅</span><p>这一天还没有安排哦～<br>计划覆盖 4月21日 到 12月24日</p></div>');
+    document.getElementById('tasks-title').textContent = '📝 当日任务';
+  } else {
+    let done2 = 0;
+    tasks.forEach(function(_,i) { if (isDone(dateStr,i)) done2++; });
+    const allDone = done2 === tasks.length;
+
+    taskList.innerHTML = phaseHtml;
+    if (allDone) {
+      const doneDiv = document.createElement('div');
+      doneDiv.className = 'all-done';
+      doneDiv.innerHTML = '<span class="emoji">🎉</span><p class="big">全部完成啦！</p><p>太棒了！今天的任务全搞定了<br>点击任务可以取消打卡</p>';
+      taskList.appendChild(doneDiv);
+    }
+
+    tasks.forEach(function(task, idx) {
+      const done = isDone(dateStr, idx);
+      if (allDone && !done) return;
+      taskList.appendChild(makeCard(dateStr, task, idx, false, null));
+    });
+
+    document.getElementById('tasks-title').textContent = isToday(currentDate) ? '📝 今日任务' : '📝 ' + formatDate(currentDate) + '的任务';
+  }
+
   const overdueSection = document.getElementById('overdue-section');
   const overdueList = document.getElementById('overdue-list');
   if (isToday(currentDate)) {
     const overdueTasks = [];
-    const allDates = Object.keys(PLAN_DATA).sort();
-    for (const d of allDates) {
-      if (d >= dateStr) break;
-      const dayTasks = PLAN_DATA[d];
-      dayTasks.forEach((task, idx) => {
-        if (!isTaskCompleted(d, idx)) {
-          overdueTasks.push({ date: d, task, idx });
-        }
+    Object.keys(PLAN_DATA).sort().forEach(function(d) {
+      if (d >= dateStr) return;
+      PLAN_DATA[d].forEach(function(task, idx) {
+        if (!isDone(d, idx)) overdueTasks.push({ date: d, task: task, idx: idx });
       });
-    }
-
+    });
     if (overdueTasks.length > 0) {
       overdueSection.style.display = 'block';
       overdueList.innerHTML = '';
-      overdueTasks.forEach(item => {
-        const tagInfo = TAG_CONFIG[item.task.tag] || { label: item.task.tag, cls: 'tag-buffer' };
-        const done = isTaskCompleted(item.date, item.idx);
-        const card = document.createElement('div');
-        card.className = `task-card overdue-card${done ? ' completed' : ''}`;
-        card.onclick = () => toggleTask(item.date, item.idx);
-        const d = new Date(item.date);
-        const dateLabel = `${d.getMonth()+1}月${d.getDate()}日`;
-        const textHtml = item.task.text.replace(/\n/g, '<br>');
-        card.innerHTML = `
-          <div class="task-check">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </div>
-          <div class="task-content">
-            <div class="overdue-date">📌 ${dateLabel}</div>
-            <span class="task-tag ${tagInfo.cls}">${tagInfo.label}</span>
-            <div class="task-text">${textHtml}</div>
-          </div>
-        `;
-        overdueList.appendChild(card);
+      overdueTasks.forEach(function(item) {
+        overdueList.appendChild(makeCard(item.date, item.task, item.idx, true, item.date));
       });
     } else {
       overdueSection.style.display = 'none';
@@ -1150,40 +1903,28 @@ function render() {
     overdueSection.style.display = 'none';
   }
 
-  // Motivation
-  document.getElementById('motivation').innerHTML = `<span class="quote">"${getMotivation()}"</span>`;
+  document.getElementById('motivation').innerHTML = '<span class="quote">"' + getMotivation() + '"</span>';
 }
 
-// ===== NAVIGATION =====
 function changeDate(delta) {
-  currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + delta);
+  currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()+delta);
   render();
 }
-
 function goToday() {
-  const now = new Date();
-  currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const n = new Date();
+  currentDate = new Date(n.getFullYear(), n.getMonth(), n.getDate());
   render();
 }
 
-// ===== INIT =====
 render();
 
-// ===== SWIPE SUPPORT =====
 let touchStartX = 0;
-let touchEndX = 0;
-document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
-document.addEventListener('touchend', e => {
-  touchEndX = e.changedTouches[0].screenX;
-  const diff = touchStartX - touchEndX;
-  if (Math.abs(diff) > 80) {
-    if (diff > 0) changeDate(1);
-    else changeDate(-1);
-  }
+document.addEventListener('touchstart', function(e) { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+document.addEventListener('touchend', function(e) {
+  const diff = touchStartX - e.changedTouches[0].screenX;
+  if (Math.abs(diff) > 80) changeDate(diff > 0 ? 1 : -1);
 }, { passive: true });
-
-// ===== KEYBOARD SUPPORT =====
-document.addEventListener('keydown', e => {
+document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft') changeDate(-1);
   if (e.key === 'ArrowRight') changeDate(1);
   if (e.key === 'Home') goToday();

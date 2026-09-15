@@ -331,6 +331,8 @@
   .tag-politics { background: linear-gradient(135deg,#FFE0E0,#FFCFCF); color: #B02020; border: 1px solid rgba(220,80,80,0.2); }
   .tag-english  { background: linear-gradient(135deg,#E0EEFF,#D0E4FF); color: #1A50C0; border: 1px solid rgba(80,130,220,0.2); }
   .tag-buffer   { background: linear-gradient(135deg,#F0E8FF,#E4D8FF); color: #7040B0; border: 1px solid rgba(160,100,220,0.2); }
+.tag-major    { background: linear-gradient(135deg,#F3E8FF,#E9D5FF); color: #6B21A8; border: 1px solid rgba(150,80,220,0.22); }
+.tag-review   { background: linear-gradient(135deg,#E0F7EE,#CFF0E4); color: #0F6B4F; border: 1px solid rgba(60,180,130,0.22); }
 
   .task-text {
     font-size: 14px;
@@ -1178,402 +1180,561 @@ const PLAN_DATA = {
     { tag: "politics",  text: "🔴 时政专题更新（1.5h）：更新至最新时政热点，补充素材库；做历年时政相关主观题2道" },
     { tag: "english",   text: "🔵 ✏️限时小作文练习⑤：写一封建议信，限时15min；作文问题清单更新" }
   ],
+    // ==========================================================
+  // v5 · 94天作战表（2026-09-16 → 12-18）+ 考前倒计时
+  // 每天固定：政治60-75min / 英语60min / 专业课90+60min / 总复盘30min
+  // 硬规则：专业课必须「输入+输出」都完成才算当天达标
+  // ==========================================================
   "2026-09-10": [
-    { tag: "politics",  text: "🔴 马原多选终极清单（1.5h）：把所有做错3次以上的多选汇总，写一张「死亡多选清单」，重点背" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第47篇（30min）；2022-2024年大作文真题专项：读3篇历年高分范文，分析套路" }
+    { tag: "politics", text: "🔴 马原多选终极清单（1.5h）：把所有做错3次以上的多选汇总，写一张「死亡多选清单」，重点背" },
+    { tag: "english", text: "🔵 扇贝原刊第47篇（30min）；2022-2024年大作文真题专项：读3篇历年高分范文，分析套路" }
   ],
-  "2026-09-14": [
-    { tag: "politics",  text: "🔴 套卷模拟③（1.5h）：做第3套政治真题客观题，多选题错误率目标<30%" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习⑨：限时30min，写完后先自查主题，重点关注「是否跑题」" }
-  ],
-  "2026-09-15": [
-    { tag: "politics",  text: "🔴 全科主观题综合模拟（1.5h）：选6道主观题（各科均衡），限时90min，规范作答" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第48篇（30min）；阅读专项：把近期做错率最高的题型集中再练5题" }
-  ],
-  "2026-09-20": [
-    { tag: "politics",  text: "🔴 9月政治总结（1h）：客观题各科错误率记录；主观题准备情况；时政覆盖程度自评" },
-    { tag: "english",   text: "🔵 9月英语总结（1h）：套卷总分趋势；作文跑题率是否改善；翻译和完型进度评估" }
-  ],
-  "2026-09-30": [
-    { tag: "politics",  text: "🔴 全科知识点自测（1h）：30道不看书的自测题，评估知识点掌握程度" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习⑩：限时30min；📰扇贝原刊第49篇" }
-  ],
-  // ——— 10月 ———
-  "2026-10-07": [
-    { tag: "politics",  text: "🔴 套卷客观题（1.5h）：做一套完整历年真题客观题，限时75min，统计错误率" },
-    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段（各30min）" }
-  ],
-  "2026-10-08": [
-    { tag: "politics",  text: "🔴 主观题专练（1.5h）：选3道主观题限时作答，重点练「关键词突出+分点作答」格式" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第50篇（30min）；真题阅读Text 1-2做题+拆解（1h）" }
-  ],
-  "2026-10-09": [
-    { tag: "politics",  text: "🔴 时政专题更新（1.5h）：整合最新热点素材，更新时政素材库" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习⑪（30min）；自评跑题问题" }
-  ],
-  "2026-10-10": [
-    { tag: "politics",  text: "🔴 错题+补弱（1.5h）：回顾本周客观题错题，针对性精读精讲精练原文" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第51篇（30min）；真题阅读Text 3-4做题+拆解（1h）" }
-  ],
-  "2026-10-11": [
-    { tag: "politics",  text: "🔴 背诵（1.5h）：背诵2道核心主观题答案模板，脱书能写出框架" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习⑥（15min），对照模板修改" }
-  ],
-  "2026-10-12": [
-    { tag: "politics",  text: "🔴 综合套卷模拟（2.5h）：做完整套卷（含客观题+主观题，限时2.5h）" },
-    { tag: "english",   text: "🔵 本周作文汇总评改" }
-  ],
-  "2026-10-13": [
-    { tag: "politics",  text: "🔴 本周复盘（1h）：记录进度，或休息" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第52篇（30min）；轻松复习功能句库" }
-  ],
-  "2026-10-15": [
-    { tag: "politics",  text: "🔴 套卷客观题（1.5h）：本月第2套，检验进度" },
-    { tag: "english",   text: "🔵 完整英语真题套卷模拟（含所有题型，计时），目标80分" }
-  ],
-  "2026-10-31": [
-    { tag: "politics",  text: "🔴 政治月度总结（1h）：记录各科客观题错误率趋势，制定11月冲刺重点" },
-    { tag: "english",   text: "🔵 英语月度总结（1h）：评估阅读准确率、作文进步情况，写11月备考要点" }
-  ],
-  // ——— 11月 · 肖八 ———
-  "2026-11-03": [
-    { tag: "politics",  text: "🔴 肖八第1套客观题（单选+多选，限时75min），对答案统计正确率" },
-    { tag: "english",   text: "🔵 全题型模拟套卷（2.5h，计时），记录各题型分数" }
-  ],
-  "2026-11-04": [
-    { tag: "politics",  text: "🔴 分析第1套肖八客观题错误，回头看精讲精练对应原文" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲昨天套卷阅读部分错题" }
-  ],
-  "2026-11-05": [
-    { tag: "politics",  text: "🔴 研究肖八主观题题目：找规律，判断今年可能考哪个方向" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；背诵大作文开头段模板（5句）" }
-  ],
-  "2026-11-06": [
-    { tag: "politics",  text: "🔴 肖八第1套多选错题重做，加入「死亡多选清单」" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
-  ],
-  "2026-11-07": [
-    { tag: "politics",  text: "🔴 背诵3道核心主观题答案框架（脱稿默写）" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；背诵小作文各类型开头结尾句" }
-  ],
-  "2026-11-08": [
-    { tag: "politics",  text: "🔴 肖八第2套客观题（提速，目标用时65min）" },
-    { tag: "english",   text: "🔵 本周所有练习汇总评改，统计大作文跑题率" }
-  ],
-  "2026-11-09": [
-    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总，写「考前错题清单」" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵功能句库重点句型" }
-  ],
-  "2026-11-15": [
-    { tag: "politics",  text: "🔴 肖八前4套客观题全部完成节点检验：统计4套平均正确率，找出薄弱章节" },
-    { tag: "english",   text: "🔵 全题型模拟套卷，目标比上次提高3-5分" }
-  ],
-  "2026-11-25": [
-    { tag: "politics",  text: "🔴 肖八全8套完成！整理「高频主观题方向清单」，开始有针对性地准备大题素材" },
-    { tag: "english",   text: "🔵 大作文专项：检查累计完成篇数，目标≥15篇；选最好的2篇背诵" }
-  ],
-  "2026-11-30": [
-    { tag: "politics",  text: "🔴 11月政治总结：肖八客观题正确率趋势；大题准备程度；制定12月冲刺计划" },
-    { tag: "english",   text: "🔵 11月英语总结：大作文完成情况（目标≥15篇，不跑题率>85%）；模板背诵进度" }
-  ],
-  // ——— 12月 · 最终冲刺 ———
-  "2026-12-01": [
-    { tag: "politics",  text: "🔴 肖四出版！立刻做第1套客观题；研读大题题目，今天背第1道大题" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读（保温）；押题大作文①：写+背" }
-  ],
-  "2026-12-02": [
-    { tag: "politics",  text: "🔴 分析肖四第1套客观题错误；继续背大题（每天1-2道）" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；押题小作文①：写+背格式" }
-  ],
-  "2026-12-03": [
-    { tag: "politics",  text: "🔴 大题背诵继续；时政最新热点最终梳理（只补最近2周的新增内容）" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；押题大作文②写+背" }
-  ],
-  "2026-12-08": [
-    { tag: "politics",  text: "🔴 肖四第2套客观题；大题继续背（目标每天1-2道，背到能默写框架）" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；押题小作文②写+背" }
-  ],
-  "2026-12-15": [
-    { tag: "politics",  text: "🔴 肖四第3-4套客观题；重点大题反复默写，能独立写出关键段落" },
-    { tag: "english",   text: "🔵 停止写新作文！专注背诵2篇大作文+2篇小作文模板" }
-  ],
-  "2026-12-20": [
-    { tag: "politics",  text: "🔴 每天早上背大题（选2道）；考前3天只看「死亡多选清单」+大题框架" },
-    { tag: "english",   text: "🔵 每天1篇阅读（保温），轻松读功能句库；倒计时模式：只背不练新题" }
-  ],
-  "2026-12-24": [
-    { tag: "politics",  text: "🔴 考前最后复习：大题框架默写一遍，「死亡多选清单」过一遍，早点睡" },
-    { tag: "english",   text: "🔵 轻松读作文模板，早点睡，明天就是你的" }
-  ],
-  // ——— 追加：v4.1 补充日期（9月11日–12月23日缺失部分）———
   "2026-09-11": [
-    { tag: "politics",  text: "🔴 马原多选终极清单（1.5h）：把所有做错3次以上的多选题汇总，写「死亡多选清单」，重点背" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第47篇（30min）；2022-2024年作文真题专项：读3篇历年高分作文范文，分析套路" }
+    { tag: "politics", text: "🔴 马原多选终极清单（1.5h）：错题汇总，补全「死亡多选清单」" },
+    { tag: "english", text: "🔵 扇贝原刊第48篇（30min）；本周作文汇总评改" }
   ],
   "2026-09-12": [
-    { tag: "politics",  text: "🔴 全科知识点自测（1h）：不看书做30道自测题，评估知识点掌握程度" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习⑨：限时30min，写完后先自查主题，重点关注是否跑题" }
+    { tag: "politics", text: "🔴 全科知识点自测（1h）：不看书做30道自测题，评估掌握程度" },
+    { tag: "english", text: "🔵 限时大作文练习⑨：30min，写完先自查主题是否跑题" }
   ],
   "2026-09-13": [
-    { tag: "politics",  text: "🔴 休息 或 轻松翻阅时政素材" },
-    { tag: "english",   text: "🔵 本周作文汇总评改，统计近期跑题情况" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 休息 或 轻松翻阅时政素材" },
+    { tag: "english", text: "🔵 回顾近期阅读错题，只看不重做" }
+  ],
+  "2026-09-14": [
+    { tag: "politics", text: "🔴 套卷模拟③（1.5h）：第3套政治真题客观题，多选错误率目标<30%" },
+    { tag: "english", text: "🔵 扇贝原刊第48篇（30min）；翻译专项1段" }
+  ],
+  "2026-09-15": [
+    { tag: "politics", text: "🔴 徐涛强化课第6节收尾 + 肖1000对应题（明天正式进入94天作战表）" },
+    { tag: "english", text: "🔵 轻量：翻一下功能句库，保持手感" },
+    { tag: "review", text: "✅ 今晚确认：教材、真题、肖1000、笔记本全部到位" }
   ],
   "2026-09-16": [
-    { tag: "politics",  text: "🔴 全科主观题综合模拟（1.5h）：选6道主观题，限时90min，规范作答" },
-    { tag: "english",   text: "🔵 精讲9月套卷中的薄弱题型；整理近期翻译常见错误" }
+    { tag: "politics", text: "🔴 徐涛第7节 + 肖1000对应题" },
+    { tag: "english", text: "🔵 2010英一阅读 Text 1-2，精读错题" },
+    { tag: "major", text: "🟣 新闻学概论：新闻本质、定义、特征、新闻价值 → 整理5个名词 + 2道简答" },
+    { tag: "review", text: "✅ 睡前3分钟：政治/英语/专业各问一句「今天完成了吗」" }
   ],
   "2026-09-17": [
-    { tag: "politics",  text: "🔴 马原+毛中特高频考点默写（1h）：不看书写10个核心名词解释，对答案" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第49篇（30min）；✏️限时大作文练习⑩：限时30min" }
+    { tag: "politics", text: "🔴 徐涛第8节 + 肖1000；复习第7节错题" },
+    { tag: "english", text: "🔵 2010阅读 Text 3-4" },
+    { tag: "major", text: "🟣 传播学概论：传播过程、模式、类型 → 10个名词 + 2道简答" }
   ],
   "2026-09-18": [
-    { tag: "politics",  text: "🔴 近代史+思修大题框架默写（1h）：不看书写出4道主观题答案框架" },
-    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段（各30min）" }
+    { tag: "politics", text: "🔴 徐涛第9节 + 肖1000" },
+    { tag: "english", text: "🔵 2011阅读 Text 1-2" },
+    { tag: "major", text: "🟣 新闻采访与写作：采访、新闻线索、采访方法 → 5个名词 + 新闻导语练习" }
   ],
   "2026-09-19": [
-    { tag: "politics",  text: "🔴 时政素材库最新更新（1.5h）：补充至9月最新热点" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第50篇（30min）；本周套卷/练题汇总回顾" }
+    { tag: "politics", text: "🔴 徐涛第10-11节 + 两节对应肖1000（双课日：第二节可拆到明早）" },
+    { tag: "english", text: "🔵 2011阅读 Text 3-4" },
+    { tag: "major", text: "🟣 新闻编辑：新闻选择、编辑、标题、导语 → 1道简答 + 1道材料提纲" }
+  ],
+  "2026-09-20": [
+    { tag: "politics", text: "🔴 徐涛第12节 + 肖1000；回看7-11节错题" },
+    { tag: "english", text: "🔵 2012阅读 Text 1-2" },
+    { tag: "major", text: "🟣 新闻评论：定义、特点、选题、立论、结构 → 2道简答" }
   ],
   "2026-09-21": [
-    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+    { tag: "politics", text: "🔴 徐涛第13节 + 肖1000" },
+    { tag: "english", text: "🔵 2012阅读 Text 3-4" },
+    { tag: "major", text: "🟣 传播学理论：议程设置、把关人、沉默的螺旋 → 每个理论写「提出者+观点+机制+案例」" }
   ],
   "2026-09-22": [
-    { tag: "politics",  text: "🔴 套卷模拟④（1.5h）：第4套历年政治真题客观题，持续检验进度" },
-    { tag: "english",   text: "🔵 完整英语真题套卷模拟（2.5h，计时），记录各题型得分" }
+    { tag: "politics", text: "🔴 徐涛第14节 + 肖1000" },
+    { tag: "english", text: "🔵 2013阅读 Text 1-2" },
+    { tag: "major", text: "🟣 网络与新媒体：新媒体特征、网络传播、社交媒体、用户参与 → 10个名词" }
   ],
   "2026-09-23": [
-    { tag: "politics",  text: "🔴 主观题专项练习（1.5h）：选3道主观题限时作答，重点练分点作答格式" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第51篇（30min）；精讲昨天套卷的阅读错题" }
+    { tag: "politics", text: "🔴 徐涛第15-16节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2013阅读 Text 3-4" },
+    { tag: "major", text: "🟣 网络与新媒体：平台、算法、媒介融合 → 完成「新媒体时代传播」万能答题框架" }
   ],
   "2026-09-24": [
-    { tag: "politics",  text: "🔴 时政专题更新（1.5h）：整合最新热点素材" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习⑪：限时30min；自评跑题问题" }
+    { tag: "politics", text: "🔴 徐涛第17节 + 肖1000" },
+    { tag: "english", text: "🔵 2014阅读 Text 1-2" },
+    { tag: "major", text: "🟣 广告学：广告定义、功能、传播过程 → 重点整理「广告对品牌的意义」" },
+    { tag: "review", text: "✅ 输出检验：合上书能写出广告4问（定义/功能/传播过程/如何参与品牌构建）才算完成" }
   ],
   "2026-09-25": [
-    { tag: "politics",  text: "🔴 错题+补弱（1.5h）：回顾本周客观题错题，针对性精读精讲精练原文" },
-    { tag: "english",   text: "🔵 📰扇贝原刊第52篇（30min）；真题阅读Text 3-4做题+拆解（1h）" }
+    { tag: "politics", text: "🔴 徐涛第18节 + 肖1000" },
+    { tag: "english", text: "🔵 2014阅读 Text 3-4" },
+    { tag: "major", text: "🟣 广告学：广告创意、传统广告与创意广告、整合营销传播 → 写1道30分简答" }
   ],
   "2026-09-26": [
-    { tag: "politics",  text: "🔴 背诵2道核心主观题答案模板（不看书能写出框架）" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习⑥（15min），对照模板修改" }
+    { tag: "politics", text: "🔴 徐涛第19节 + 肖1000" },
+    { tag: "english", text: "🔵 2015阅读 Text 1-2" },
+    { tag: "major", text: "🟣 广告管理专项：广告主、广告公司、媒体、广告产业、广告监管 → 做一页「广告管理地图」（去年440不会的一块，今天开始抢回来）" }
   ],
   "2026-09-27": [
-    { tag: "politics",  text: "🔴 综合套卷模拟（2.5h）：含客观题+主观题，完整作答" },
-    { tag: "english",   text: "🔵 本周作文汇总评改" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 徐涛第20-21节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2015阅读 Text 3-4" },
+    { tag: "major", text: "🟣 公共关系专项①：PR定义、主体、公众、职能、传播 → 重点背四种公共关系模式（从今天起每周至少默写一次）" }
   ],
   "2026-09-28": [
-    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+    { tag: "politics", text: "🔴 回顾第7-21节肖1000错题，不开新课" },
+    { tag: "english", text: "🔵 2016阅读 Text 1-2" },
+    { tag: "major", text: "🟣 公共关系专项②：四种模式 + 危机公关 + 危机传播 → 写1道危机材料题" }
+  ],
+  "2026-09-29": [
+    { tag: "politics", text: "🔴 第7-21节知识框架闭眼回忆" },
+    { tag: "english", text: "🔵 2016阅读 Text 3-4" },
+    { tag: "major", text: "🟣 国际传播：概念、主体、国家形象、国际话语权、国际传播能力" },
+    { tag: "review", text: "✅ 场景五力第一次补漏：写下完整答题框架" }
+  ],
+  "2026-09-30": [
+    { tag: "politics", text: "🔴 徐涛第7-21节总复盘 + 肖1000错题二刷" },
+    { tag: "english", text: "🔵 2017阅读 Text 1-4（整卷）" },
+    { tag: "major", text: "🟣 专业小测：名词5 + 简答2 + 广告题1 + PR题1 + 材料题1（只列提纲）" },
+    { tag: "review", text: "✅ 计算题首练：广告收入增长率类，目标3分钟内解决（看题→写公式→算→检查单位→写结论）" }
+  ],
+  "2026-10-01": [
+    { tag: "politics", text: "🔴 徐涛第22-23节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2018阅读 Text 1-2" },
+    { tag: "major", text: "🟣 新闻学：新闻真实性、客观性、新闻价值、新闻伦理" }
+  ],
+  "2026-10-02": [
+    { tag: "politics", text: "🔴 徐涛第24节 + 肖1000" },
+    { tag: "english", text: "🔵 2018阅读 Text 3-4" },
+    { tag: "major", text: "🟣 新闻学：记者职业、媒介组织、新闻生产 → 2道简答" }
+  ],
+  "2026-10-03": [
+    { tag: "politics", text: "🔴 徐涛第25节 + 肖1000" },
+    { tag: "english", text: "🔵 2019阅读 Text 1-2" },
+    { tag: "major", text: "🟣 传播学：大众传播、传播效果、受众 → 整理核心理论表" }
+  ],
+  "2026-10-04": [
+    { tag: "politics", text: "🔴 徐涛第26节 + 肖1000" },
+    { tag: "english", text: "🔵 2019阅读 Text 3-4" },
+    { tag: "major", text: "🟣 传播学：使用与满足、培养、知沟、第三人效果 → 每个理论配案例" }
+  ],
+  "2026-10-05": [
+    { tag: "politics", text: "🔴 徐涛第27-28节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2020阅读 Text 1-2" },
+    { tag: "major", text: "🟣 网络与新媒体：媒介融合、全媒体传播体系、平台化" }
   ],
   "2026-10-06": [
-    { tag: "politics",  text: "🔴 做一套完整历年真题客观题（含单选+多选），限时75min，统计错误率" },
-    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段（各30min）" }
+    { tag: "politics", text: "🔴 徐涛第29节 + 肖1000" },
+    { tag: "english", text: "🔵 2020阅读 Text 3-4" },
+    { tag: "major", text: "🟣 网络与新媒体：算法传播、智能传播、AIGC → 1道热点简答" },
+    { tag: "review", text: "✅ 本周计算题训练①" }
+  ],
+  "2026-10-07": [
+    { tag: "politics", text: "🔴 徐涛第30节 + 肖1000" },
+    { tag: "english", text: "🔵 2021阅读 Text 1-2" },
+    { tag: "major", text: "🟣 广告：广告传播理论、品牌传播、消费者、品牌价值" }
+  ],
+  "2026-10-08": [
+    { tag: "politics", text: "🔴 徐涛第31节 + 肖1000" },
+    { tag: "english", text: "🔵 2021阅读 Text 3-4" },
+    { tag: "major", text: "🟣 广告：广告创意、创意方法、创意策划 → 完成一份「广告策划流程」" }
+  ],
+  "2026-10-09": [
+    { tag: "politics", text: "🔴 徐涛第32-33节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2022阅读 Text 1-2" },
+    { tag: "major", text: "🟣 广告：整合营销传播、媒介策略、广告效果" },
+    { tag: "review", text: "✅ PR四种模式周默写①" }
+  ],
+  "2026-10-10": [
+    { tag: "politics", text: "🔴 徐涛第34节 + 肖1000" },
+    { tag: "english", text: "🔵 2022阅读 Text 3-4" },
+    { tag: "major", text: "🟣 广告真题日：做JLU历年广告题 → 整理所有不会的广告知识点" }
+  ],
+  "2026-10-11": [
+    { tag: "politics", text: "🔴 徐涛第35节 + 肖1000" },
+    { tag: "english", text: "🔵 2023英一阅读 Text 1-2（最新真题开始保留，不浪费）" },
+    { tag: "major", text: "🟣 PR：组织传播、公众、公共关系传播、媒体关系" }
+  ],
+  "2026-10-12": [
+    { tag: "politics", text: "🔴 徐涛第36节 + 肖1000" },
+    { tag: "english", text: "🔵 2023阅读 Text 3-4" },
+    { tag: "major", text: "🟣 PR：四种模式、危机传播、危机管理 → 闭眼默写四种模式" }
+  ],
+  "2026-10-13": [
+    { tag: "politics", text: "🔴 徐涛第37-38节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2024阅读 Text 1-2" },
+    { tag: "major", text: "🟣 PR：事实路径、危机传播过程、舆情回应 → 做30分材料题" },
+    { tag: "review", text: "✅ 本周计算题训练②" }
   ],
   "2026-10-14": [
-    { tag: "politics",  text: "🔴 本周复盘，记录进度；或休息" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；轻松复习功能句库" }
+    { tag: "politics", text: "🔴 徐涛第39节 + 肖1000" },
+    { tag: "english", text: "🔵 2024阅读 Text 3-4" },
+    { tag: "major", text: "🟣 国际传播：主体、国家形象、跨文化传播" }
+  ],
+  "2026-10-15": [
+    { tag: "politics", text: "🔴 徐涛第40节 + 肖1000" },
+    { tag: "english", text: "🔵 2025阅读 Text 1-2" },
+    { tag: "major", text: "🟣 国际传播+热点：国际传播能力、主流媒体、平台传播 → 做1道论述题" },
+    { tag: "review", text: "✅ PR四模式周默写② + 场景五力第二次回收" }
   ],
   "2026-10-16": [
-    { tag: "politics",  text: "🔴 选3道主观题限时作答" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲昨天套卷的阅读错题" }
+    { tag: "politics", text: "🔴 徐涛第41节 + 肖1000" },
+    { tag: "english", text: "🔵 2025阅读 Text 3-4" },
+    { tag: "major", text: "🟣 新闻学+传播学第一次综合背诵：名词10个 + 简答2个" }
   ],
   "2026-10-17": [
-    { tag: "politics",  text: "🔴 错题回顾+补弱，针对性精读精讲精练原文" },
-    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段" }
+    { tag: "politics", text: "🔴 徐涛第42-43节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 2026英一阅读 Text 1-2，限时" },
+    { tag: "major", text: "🟣 334真题：选一套，只做名词 + 简答" }
   ],
   "2026-10-18": [
-    { tag: "politics",  text: "🔴 背诵2道核心主观题答案模板" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；评改" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 徐涛第44节 + 肖1000" },
+    { tag: "english", text: "🔵 2026阅读 Text 3-4，限时" },
+    { tag: "major", text: "🟣 334真题复盘：所有不会的题回到教材找依据" },
+    { tag: "review", text: "✅ 本周计算题训练③" }
   ],
   "2026-10-19": [
-    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+    { tag: "politics", text: "🔴 徐涛第45节 + 肖1000" },
+    { tag: "english", text: "🔵 英语阅读错题总复盘" },
+    { tag: "major", text: "🟣 新闻采访/编辑/评论综合专题 → 完成2道简答" }
   ],
   "2026-10-20": [
-    { tag: "politics",  text: "🔴 做一套完整历年真题客观题（含单选+多选），限时75min" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；真题阅读Text 1-2做题+拆解（1h）" }
+    { tag: "politics", text: "🔴 徐涛第46节 + 肖1000" },
+    { tag: "english", text: "🔵 完形2018 + 2019" },
+    { tag: "major", text: "🟣 广告第一轮背诵：广告基础、品牌、创意、策划" }
   ],
   "2026-10-21": [
-    { tag: "politics",  text: "🔴 主观题专练（1.5h）：选3道主观题限时作答" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；对照模板修改" }
+    { tag: "politics", text: "🔴 徐涛第47-48节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 翻译2018 + 2019" },
+    { tag: "major", text: "🟣 广告管理 + 广告法规 + 广告效果 → 做1道广告管理题" },
+    { tag: "review", text: "✅ PR四模式周默写③" }
   ],
   "2026-10-22": [
-    { tag: "politics",  text: "🔴 时政专题更新，整合最新热点素材" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；真题阅读Text 3-4做题+拆解（1h）" }
+    { tag: "politics", text: "🔴 徐涛第49节 + 肖1000" },
+    { tag: "english", text: "🔵 新题型2018-2020" },
+    { tag: "major", text: "🟣 PR第一轮背诵：四种模式 + 危机传播 + 事实路径" }
   ],
   "2026-10-23": [
-    { tag: "politics",  text: "🔴 错题+补弱（1.5h）：回顾本周客观题错题" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；自评跑题问题" }
+    { tag: "politics", text: "🔴 徐涛第50节 + 肖1000" },
+    { tag: "english", text: "🔵 作文：整理小作文格式" },
+    { tag: "major", text: "🟣 国际传播 + 网络与新媒体综合 → 写1道25分论述" }
   ],
   "2026-10-24": [
-    { tag: "politics",  text: "🔴 背诵2道核心主观题答案模板，脱书能写出框架" },
-    { tag: "english",   text: "🔵 完型填空专项5题+翻译专项1段" }
+    { tag: "politics", text: "🔴 徐涛第51节 + 肖1000" },
+    { tag: "english", text: "🔵 大作文：整理自己的万能结构" },
+    { tag: "major", text: "🟣 440真题专项：广告题 + PR题" },
+    { tag: "review", text: "✅ 本周计算题训练④" }
   ],
   "2026-10-25": [
-    { tag: "politics",  text: "🔴 做完整套卷模拟（含客观题+主观题，2.5h）" },
-    { tag: "english",   text: "🔵 本周作文汇总评改" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 徐涛第52-53节 + 肖1000（双课日）" },
+    { tag: "english", text: "🔵 完形2018-2020" },
+    { tag: "major", text: "🟣 440真题复盘：把「不会的题」分类为 知识不会 / 不会分析 / 不会表达" }
   ],
   "2026-10-26": [
-    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+    { tag: "politics", text: "🔴 徐涛第54节 + 肖1000" },
+    { tag: "english", text: "🔵 翻译2020-2022" },
+    { tag: "major", text: "🟣 热点专题①：AIGC/人工智能 与 新闻、传播、广告" }
   ],
   "2026-10-27": [
-    { tag: "politics",  text: "🔴 做一套完整历年真题客观题，限时75min" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；真题阅读Text 1-2做题+拆解（1h）" }
+    { tag: "politics", text: "🔴 徐涛第55节 + 肖1000" },
+    { tag: "english", text: "🔵 新题型2021-2023" },
+    { tag: "major", text: "🟣 热点专题②：算法、平台、媒介融合、全媒体" }
   ],
   "2026-10-28": [
-    { tag: "politics",  text: "🔴 主观题专练（1.5h）：选3道主观题，重点练规范格式" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；对照模板修改" }
+    { tag: "politics", text: "🔴 徐涛第56节 + 肖1000" },
+    { tag: "english", text: "🔵 小作文2篇" },
+    { tag: "major", text: "🟣 热点专题③：品牌、广告创新、整合营销、消费社会" },
+    { tag: "review", text: "✅ PR四模式周默写④：目标3分钟写出四种模式+核心特点" }
   ],
   "2026-10-29": [
-    { tag: "politics",  text: "🔴 时政专题更新，整合最新热点素材" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；✏️限时大作文练习（30min）" }
+    { tag: "politics", text: "🔴 徐涛第57节 + 肖1000" },
+    { tag: "english", text: "🔵 大作文1篇，限时45分钟" },
+    { tag: "major", text: "🟣 热点专题④：危机传播、舆情、公共关系" }
   ],
   "2026-10-30": [
-    { tag: "politics",  text: "🔴 本周复盘+错题回顾" },
-    { tag: "english",   text: "🔵 本周作文汇总评改" }
+    { tag: "politics", text: "🔴 徐涛第58节 + 肖1000" },
+    { tag: "english", text: "🔵 完形 + 翻译综合" },
+    { tag: "major", text: "🟣 热点专题⑤：国际传播、国家形象、话语权" },
+    { tag: "review", text: "✅ 本周计算题训练⑤ + 场景五力第三次回收" }
+  ],
+  "2026-10-31": [
+    { tag: "politics", text: "🔴 徐涛第59-62节全部完成 + 对应肖1000 🎉 强化课收官！" },
+    { tag: "english", text: "🔵 英语2010-2026错题总整理" },
+    { tag: "major", text: "🟣 专业第一轮总验收：名词10 + 简答4 + 材料1，严格限时" },
+    { tag: "review", text: "✅ 从11月起政治切换为：刷题→错题→背诵→模拟" }
+  ],
+  "2026-11-01": [
+    { tag: "politics", text: "🔴 肖1000马原错题二刷" },
+    { tag: "english", text: "🔵 2026阅读再做一遍，限时" },
+    { tag: "major", text: "🟣 334真题①：完整做名词 + 简答" }
+  ],
+  "2026-11-02": [
+    { tag: "politics", text: "🔴 肖1000毛中特错题" },
+    { tag: "english", text: "🔵 2018完形 + 新题型" },
+    { tag: "major", text: "🟣 334真题①复盘：逐题标出得分点/丢分点" },
+    { tag: "review", text: "✅ 本周计算题训练⑥" }
+  ],
+  "2026-11-03": [
+    { tag: "politics", text: "🔴 肖1000史纲错题" },
+    { tag: "english", text: "🔵 2018翻译 + 作文" },
+    { tag: "major", text: "🟣 334：新闻传播专题背诵" }
+  ],
+  "2026-11-04": [
+    { tag: "politics", text: "🔴 肖1000思修错题" },
+    { tag: "english", text: "🔵 2019阅读限时" },
+    { tag: "major", text: "🟣 334：网络与新媒体专题" }
+  ],
+  "2026-11-05": [
+    { tag: "politics", text: "🔴 肖1000综合错题" },
+    { tag: "english", text: "🔵 2019完形 + 新题型" },
+    { tag: "major", text: "🟣 334：新闻采访/编辑/评论" },
+    { tag: "review", text: "✅ PR四模式周默写⑤" }
+  ],
+  "2026-11-06": [
+    { tag: "politics", text: "🔴 政治错题本第一次总复盘" },
+    { tag: "english", text: "🔵 2019翻译 + 作文" },
+    { tag: "major", text: "🟣 440真题①：广告部分" }
+  ],
+  "2026-11-07": [
+    { tag: "politics", text: "🔴 肖1000第二轮薄弱题" },
+    { tag: "english", text: "🔵 2020阅读限时" },
+    { tag: "major", text: "🟣 440：广告创意 + 品牌 + 整合营销" }
+  ],
+  "2026-11-08": [
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2020完形 + 新题型" },
+    { tag: "major", text: "🟣 440：广告管理专项——重点补去年失分点" },
+    { tag: "review", text: "✅ 本周计算题训练⑦ + 广告管理30分答案自检" }
+  ],
+  "2026-11-09": [
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2020翻译" },
+    { tag: "major", text: "🟣 440：PR四种模式 + 危机传播" }
   ],
   "2026-11-10": [
-    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总，写「考前错题清单」" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵功能句库重点句型" }
+    { tag: "politics", text: "🔴 政治错题复盘" },
+    { tag: "english", text: "🔵 2021阅读" },
+    { tag: "major", text: "🟣 440：国际传播 + 公共关系综合" },
+    { tag: "review", text: "✅ PR四模式周默写⑥" }
   ],
   "2026-11-11": [
-    { tag: "politics",  text: "🔴 肖八第3套客观题，限时75min" },
-    { tag: "english",   text: "🔵 全题型模拟套卷（2.5h，计时），记录各题型分数" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2021完形 + 新题型" },
+    { tag: "major", text: "🟣 334真题②：限时完成" }
   ],
   "2026-11-12": [
-    { tag: "politics",  text: "🔴 分析第3套肖八客观题错误，精读对应原文" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲昨天套卷阅读部分错题" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2021翻译 + 作文" },
+    { tag: "major", text: "🟣 334真题②复盘" },
+    { tag: "review", text: "✅ 本周计算题训练⑧" }
   ],
   "2026-11-13": [
-    { tag: "politics",  text: "🔴 研究肖八3-4套主观题方向，补充大题素材库" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；背诵大作文开头段模板" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2022阅读" },
+    { tag: "major", text: "🟣 440真题②：限时完成" }
   ],
   "2026-11-14": [
-    { tag: "politics",  text: "🔴 肖八第3套多选错题重做，更新「死亡多选清单」" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2022完形 + 新题型" },
+    { tag: "major", text: "🟣 440真题②复盘" }
+  ],
+  "2026-11-15": [
+    { tag: "politics", text: "🔴 政治第一次完整选择题训练" },
+    { tag: "english", text: "🔵 2022翻译 + 作文" },
+    { tag: "major", text: "🟣 专业第一次半套模拟：334/440各抽重点题" },
+    { tag: "review", text: "✅ 场景五力第四次回收 + 危机传播材料题1道" }
   ],
   "2026-11-16": [
-    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2023阅读限时" },
+    { tag: "major", text: "🟣 新闻学名词20个，闭眼写" }
   ],
   "2026-11-17": [
-    { tag: "politics",  text: "🔴 肖八第4套客观题，提速练习" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；背诵小作文各类型开头结尾句" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2023完形 + 新题型" },
+    { tag: "major", text: "🟣 传播学名词20个，闭眼写" },
+    { tag: "review", text: "✅ 本周计算题训练⑨" }
   ],
   "2026-11-18": [
-    { tag: "politics",  text: "🔴 第4套错题分析，回头看精讲精练对应原文" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；精讲套卷阅读部分错题" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2023翻译" },
+    { tag: "major", text: "🟣 新闻学简答3道，限时" }
   ],
   "2026-11-19": [
-    { tag: "politics",  text: "🔴 背诵3道核心主观题答案框架（脱稿默写）" },
-    { tag: "english",   text: "🔵 ✏️限时大作文练习（30min）；背诵大作文开头段模板（5句）" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2023作文" },
+    { tag: "major", text: "🟣 传播学简答3道，限时" },
+    { tag: "review", text: "✅ PR四模式周默写⑦" }
   ],
   "2026-11-20": [
-    { tag: "politics",  text: "🔴 肖八第5套客观题（限时70min）" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2024阅读" },
+    { tag: "major", text: "🟣 网络与新媒体简答3道" }
   ],
   "2026-11-21": [
-    { tag: "politics",  text: "🔴 第5套错题重做，更新「死亡多选清单」" },
-    { tag: "english",   text: "🔵 本周所有练习汇总评改，统计大作文跑题率" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2024完形 + 新题型" },
+    { tag: "major", text: "🟣 广告名词20个 + 简答3道" },
+    { tag: "review", text: "✅ 本周计算题训练⑩" }
   ],
   "2026-11-22": [
-    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵功能句库重点句型" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2024翻译 + 作文" },
+    { tag: "major", text: "🟣 广告创意/品牌/整合营销：30分题2道" }
   ],
   "2026-11-23": [
-    { tag: "buffer",    text: "休息日：今天不安排任务，好好休息" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2025阅读" },
+    { tag: "major", text: "🟣 广告管理：15分/30分题各1道" }
   ],
   "2026-11-24": [
-    { tag: "politics",  text: "🔴 肖八第6套客观题，持续提速" },
-    { tag: "english",   text: "🔵 全题型模拟套卷（2.5h，计时），记录各题型分数" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2025完形 + 新题型" },
+    { tag: "major", text: "🟣 PR名词20个 + 四种模式默写" },
+    { tag: "review", text: "✅ PR四模式周默写⑧：3分钟目标达成检查" }
+  ],
+  "2026-11-25": [
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2025翻译" },
+    { tag: "major", text: "🟣 PR危机传播：30分材料题1道" },
+    { tag: "review", text: "✅ 本周计算题训练⑪" }
   ],
   "2026-11-26": [
-    { tag: "politics",  text: "🔴 肖八第7-8套客观题；错题汇总，重点背死亡多选清单" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；✏️限时大作文练习（30min）" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2025作文" },
+    { tag: "major", text: "🟣 国际传播：名词10 + 简答2" }
   ],
   "2026-11-27": [
-    { tag: "politics",  text: "🔴 高频主观题方向：选3道最重要的题，写完整答案框架" },
-    { tag: "english",   text: "🔵 ✏️限时小作文练习（15min）；背诵小作文各类型开头结尾句" }
+    { tag: "politics", text: "🔴 政治选择题50题" },
+    { tag: "english", text: "🔵 2026阅读限时" },
+    { tag: "major", text: "🟣 热点：AIGC + 新闻传播" }
   ],
   "2026-11-28": [
-    { tag: "politics",  text: "🔴 背诵3道核心主观题答案框架，脱稿默写" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；完型填空专项5题+翻译1段" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 2026完形 + 新题型" },
+    { tag: "major", text: "🟣 热点：AIGC + 广告创意" }
   ],
   "2026-11-29": [
-    { tag: "politics",  text: "🔴 本周肖八客观题正确率汇总，更新考前错题清单" },
-    { tag: "english",   text: "🔵 本周所有练习汇总评改，统计大作文跑题率" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 政治选择题60题" },
+    { tag: "english", text: "🔵 2026翻译 + 作文" },
+    { tag: "major", text: "🟣 334完整模拟，限时3小时" }
+  ],
+  "2026-11-30": [
+    { tag: "politics", text: "🔴 政治模拟卷选择题" },
+    { tag: "english", text: "🔵 英语错题总复盘" },
+    { tag: "major", text: "🟣 334模拟卷复盘：逐题写「得分点/丢分点」" },
+    { tag: "review", text: "✅ 11月总结：专业课三轮输出的第二轮完成度自评" }
+  ],
+  "2026-12-01": [
+    { tag: "politics", text: "🔴 政治模拟卷选择题" },
+    { tag: "english", text: "🔵 2023-2026阅读错题" },
+    { tag: "major", text: "🟣 440广告专题总背诵" }
+  ],
+  "2026-12-02": [
+    { tag: "politics", text: "🔴 政治错题 + 知识点" },
+    { tag: "english", text: "🔵 英语作文·小作文" },
+    { tag: "major", text: "🟣 440 PR专题总背诵" }
+  ],
+  "2026-12-03": [
+    { tag: "politics", text: "🔴 政治模拟卷" },
+    { tag: "english", text: "🔵 英语作文·大作文" },
+    { tag: "major", text: "🟣 440国际传播 + 新媒体" }
   ],
   "2026-12-04": [
-    { tag: "politics",  text: "🔴 肖四第1套大题重读，比对答案，找缺漏知识点" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵押题大作文①，能默写80%" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 英语阅读一套" },
+    { tag: "major", text: "🟣 440完整模拟，3小时" }
   ],
   "2026-12-05": [
-    { tag: "politics",  text: "🔴 死亡多选清单过一遍；背诵2道大题" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；押题小作文②写+背" }
+    { tag: "politics", text: "🔴 政治选择题" },
+    { tag: "english", text: "🔵 英语翻译 + 完形" },
+    { tag: "major", text: "🟣 440模拟复盘" }
   ],
   "2026-12-06": [
-    { tag: "politics",  text: "🔴 休息 或 轻松翻阅大题框架" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松复习作文模板" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 政治模拟选择题" },
+    { tag: "english", text: "🔵 英语作文" },
+    { tag: "major", text: "🟣 去年丢分的五大坑全部重新答一遍" },
+    { tag: "review", text: "✅ 广告管理最后一次30分答案检验" }
   ],
   "2026-12-07": [
-    { tag: "buffer",    text: "休息日：今天不安排新任务，好好休息" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 英语阅读" },
+    { tag: "major", text: "🟣 334名词解释第二轮" }
+  ],
+  "2026-12-08": [
+    { tag: "politics", text: "🔴 政治选择题" },
+    { tag: "english", text: "🔵 英语完形 + 新题型" },
+    { tag: "major", text: "🟣 334简答第二轮" }
   ],
   "2026-12-09": [
-    { tag: "politics",  text: "🔴 第2套客观题错误分析；大题背诵继续" },
-    { tag: "english",   text: "🔵 📰扇贝原刊（30min）；背诵押题大作文②，能默写80%" }
+    { tag: "politics", text: "🔴 政治模拟卷" },
+    { tag: "english", text: "🔵 英语翻译" },
+    { tag: "major", text: "🟣 440广告 + PR第二轮" }
   ],
   "2026-12-10": [
-    { tag: "politics",  text: "🔴 大题背诵；时政最新热点最终梳理" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；押题大作文③写+背" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 英语大小作文" },
+    { tag: "major", text: "🟣 热点专题第二轮" },
+    { tag: "review", text: "✅ 计算题最后一轮：确保3分钟内稳定拿分" }
   ],
   "2026-12-11": [
-    { tag: "politics",  text: "🔴 死亡多选清单过一遍；背诵2道大题" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵押题小作文①②" }
+    { tag: "politics", text: "🔴 政治选择题100题精选" },
+    { tag: "english", text: "🔵 英语阅读错题" },
+    { tag: "major", text: "🟣 334/440名词解释总背诵" }
   ],
   "2026-12-12": [
-    { tag: "politics",  text: "🔴 肖四第3套客观题；背诵2道大题" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵押题大作文③" }
+    { tag: "politics", text: "🔴 政治错题" },
+    { tag: "english", text: "🔵 英语大小作文各1篇" },
+    { tag: "major", text: "🟣 广告：品牌/创意/管理/IMC" }
   ],
   "2026-12-13": [
-    { tag: "politics",  text: "🔴 休息 或 轻松翻阅大题框架" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松复习功能句库" },
-    { tag: "buffer",    text: "休息/缓冲" }
+    { tag: "politics", text: "🔴 政治模拟卷选择题" },
+    { tag: "english", text: "🔵 英语阅读保持手感" },
+    { tag: "major", text: "🟣 PR：四模式 + 危机传播 + 事实路径" }
   ],
   "2026-12-14": [
-    { tag: "buffer",    text: "休息日：今天不安排新任务，好好休息" }
+    { tag: "politics", text: "🔴 政治错题 + 核心知识" },
+    { tag: "english", text: "🔵 英语翻译 + 新题型" },
+    { tag: "major", text: "🟣 新闻传播：核心理论 + 新闻业务" }
+  ],
+  "2026-12-15": [
+    { tag: "politics", text: "🔴 政治最后一轮选择题" },
+    { tag: "english", text: "🔵 英语作文模板 + 高频词" },
+    { tag: "major", text: "🟣 专业最后一次半模拟" }
   ],
   "2026-12-16": [
-    { tag: "politics",  text: "🔴 第4套客观题错误分析；大题背诵继续" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读（保温）；复习背诵的作文模板" }
+    { tag: "politics", text: "🔴 政治错题只看高频错点" },
+    { tag: "english", text: "🔵 英语阅读2篇保持手感" },
+    { tag: "major", text: "🟣 334/440历年真题高频考点总背" }
   ],
   "2026-12-17": [
-    { tag: "politics",  text: "🔴 大题默写①：选3道最重要的大题，完整默写，检查覆盖率" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松读功能句库" }
+    { tag: "politics", text: "🔴 政治选择题错题本" },
+    { tag: "english", text: "🔵 英语作文各看1篇范文 + 默写自己的结构" },
+    { tag: "major", text: "🟣 专业热点 + 名词解释最后一轮" }
   ],
   "2026-12-18": [
-    { tag: "politics",  text: "🔴 死亡多选清单最终过一遍" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；背诵所有押题作文模板各一遍" }
+    { tag: "politics", text: "🔴 政治只看错题、核心知识，不开新内容" },
+    { tag: "english", text: "🔵 英语只保持手感，不做难题" },
+    { tag: "major", text: "🟣 专业课只背自己整理的核心框架、名词、真题错题" },
+    { tag: "review", text: "✅ 晚上停止高强度学习，早点睡" }
   ],
   "2026-12-19": [
-    { tag: "politics",  text: "🔴 大题默写②：再选3道，完整默写" },
-    { tag: "english",   text: "🔵 每天1篇真题阅读；轻松复习功能句库" }
+    { tag: "buffer", text: "缓冲日：不安排新任务。睡眠提前对齐考试时间，白天按考试时段翻框架" }
+  ],
+  "2026-12-20": [
+    { tag: "politics", text: "🔴 政治只看「死亡多选清单」+ 大题框架" },
+    { tag: "english", text: "🔵 英语只读作文模板和功能句库" },
+    { tag: "major", text: "🟣 专业：名词解释 + 四种模式 + 场景五力 快速过一遍" }
   ],
   "2026-12-21": [
-    { tag: "buffer",    text: "休息日：今天不安排新任务，好好休息" }
+    { tag: "politics", text: "🔴 政治错题最后一遍" },
+    { tag: "english", text: "🔵 英语阅读1篇保温" },
+    { tag: "major", text: "🟣 专业：只看自己写的真题错题和答题框架" },
+    { tag: "buffer", text: "下午散步放松，别熬夜" }
   ],
   "2026-12-22": [
-    { tag: "politics",  text: "🔴 大题框架默写一遍；死亡多选清单再过一遍" },
-    { tag: "english",   text: "🔵 每天1篇阅读（保温）；复习押题大作文+小作文模板" }
+    { tag: "review", text: "✅ 全天轻复习：三科各自的核心清单，每科不超过1小时" },
+    { tag: "buffer", text: "准备好身份证、准考证、文具，确认考场路线" }
   ],
   "2026-12-23": [
-    { tag: "politics",  text: "🔴 考前倒计时：死亡多选清单+大题框架最后一遍，放松心态" },
-    { tag: "english",   text: "🔵 轻松读作文模板；放松，别做新题" }
-  ]
-
+    { tag: "buffer", text: "考前最后一天：不看新内容。翻翻框架，早点睡" },
+    { tag: "review", text: "✅ 明天就是你的" }
+  ],
+  "2026-12-24": [
+    { tag: "buffer", text: "考试前一天/开考日：按考场时间起床，正常吃三餐" },
+    { tag: "review", text: "✅ 你已经把这94天走完了，剩下的就是把会的写出来 🔥" }
+  ],
 };
 
 // ===================================================================
@@ -1584,6 +1745,8 @@ const TAG_CONFIG = {
   afternoon: { label: "🌤️ 下午·实务",  cls: "tag-afternoon" },
   politics:  { label: "🔴 政治",        cls: "tag-politics" },
   english:   { label: "🔵 英语",        cls: "tag-english" },
+  major:     { label: "🟣 专业课",      cls: "tag-major" },
+  review:    { label: "✅ 复盘/清单",     cls: "tag-review" },
   buffer:    { label: "💜 缓冲/休息",   cls: "tag-buffer" }
 };
 
@@ -1708,8 +1871,21 @@ function render() {
     phaseHtml = '<div class="phase-pill phase-course">📖 阶段一：专业课冲刺</div>';
   } else if (dateStr <= '2026-07-31') {
     phaseHtml = '<div class="phase-pill phase-plus">📖+🔴+🔵 阶段二：三线并行</div>';
-  } else {
+  } else if (dateStr <= '2026-09-15') {
     phaseHtml = '<div class="phase-pill phase-final">🔴+🔵 阶段三：政治英语冲刺</div>';
+  } else {
+    const PHASES = [
+      ['2026-10-16', '🗺️ 阶段三 · 政治强化课收官｜专业一轮完成'],
+      ['2026-11-01', '🗺️ 阶段四 · 考研输出期｜334/440真题驱动'],
+      ['2026-11-16', '🗺️ 阶段五 · 从「我知道」到「我能写」'],
+      ['2026-12-01', '🗺️ 阶段六 · 最后冲刺｜不再学新东西'],
+      ['2026-12-11', '🗺️ 阶段七 · 最后8天｜把会的全部拿到'],
+      ['2026-12-19', '🌙 考前倒计时 · 静息养气'],
+      ['9999', '🗺️ 阶段一 · 补洞与建立框架（94天作战表起点）']
+    ];
+    let ph = PHASES[PHASES.length - 1][1];
+    for (let i = PHASES.length - 1; i >= 0; i--) { if (dateStr >= PHASES[i][0]) { ph = PHASES[i][1]; break; } }
+    phaseHtml = '<div class="phase-pill phase-final">' + ph + '</div>';
   }
 
   const taskList = document.getElementById('task-list');
